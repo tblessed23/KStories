@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <TextView
+            android:id="@+id/audio_title"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="4dp"
+            android:ellipsize="end"
+            android:text="The Story of The Washingtons of Titustown"
+            tools:text="The Story of The Washingtons of Titustown"
+            android:maxLines="4" />
+
+        <TextView
+            android:id="@+id/city_of_story"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:maxLines="2"
+            android:text="Norfolk"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/county_of_story"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:maxLines="2"
+            android:text="Princess Anne County"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/state_of_story"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:maxLines="2"
+            android:text="Virginia"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/ancestor_first_name"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:maxLines="2"
+            android:text="James"
+            android:ellipsize="end" />
+
+        <TextView
+        android:id="@+id/ancestor_last_name"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:textColor="#6000"
+        android:maxLines="2"
+            android:text="Washington"
+        android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/family_name"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:maxLines="2"
+            android:text="The Washintons of James"
+            android:ellipsize="end" />
+
+        <!-- TextView that displays the update date -->
+        <TextView
+            android:id="@+id/taskUpdatedAt"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/primary_text_light"
+            tools:text="11/11/1111" />
+
+        <Button
+            android:id="@+id/edit_saved_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

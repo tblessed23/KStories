@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "123848769325",
+    "firebase_url": "https://kstories-900ec.firebaseio.com",
+    "project_id": "kstories-900ec",
+    "storage_bucket": "kstories-900ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123848769325:android:adf415b1213bc4577e5da4",
+        "android_client_info": {
+          "package_name": "com.example.android.kstories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123848769325-0ctu7advnk0bp99o3hkl0n3e3ajf03ah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.kstories",
+            "certificate_hash": "7b50e290f21d3db33d6c23d6bdacf17ee9e8546d"
+          }
+        },
+        {
+          "client_id": "123848769325-bn74u9fbmj59htrg70qsftehg3metu93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANOMcr5IheyG68Ii-_NqadniRAe5DUXdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123848769325-bn74u9fbmj59htrg70qsftehg3metu93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">KStories</string>
+
+    <!--Main Activity-->
+    <string name="browseall">Browse All</string>
+    <string name="search">Search</string>
+    <string name="welcometext">Welcome to Kisa!</string>
+    <string name="welcomedescriptiontext">Griot. Tell your ancestors stories. Tell your family stories.</string>
+
+    <!--User Main Activity-->
+    <string name="recordaudio">Record Audio</string>
+    <string name="savedaudio">Saved Audio</string>
+    <string name="edituserdetails">Edit User Details</string>
+    <string name="welcometextuser">Welcome to Kisa User!</string>
+    <string name="welcomedescriptiontextuser">Account user tools</string>
+
+    <!--UserRecordAudioActivity-->
+    <string name="startPlaying">Play</string>
+    <string name="startRecording">Record</string>
+    <string name="stop">Stop</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="edit">Edit Files</string>
+
+    <!--UserEditAudioDetailsActivity-->
+    <string name="add_button">Save</string>
+    <string name="edit_task_description">Describe your taskEntry...</string>
+    <string name="update_button">Update</string>
+</resources>
