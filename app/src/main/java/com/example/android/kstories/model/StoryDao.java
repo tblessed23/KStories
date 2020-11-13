@@ -14,7 +14,7 @@ import java.util.List;
 public interface StoryDao {
 
     @Query("SELECT * FROM story ORDER BY updated_at")
-    List<Story> loadAllStories();
+    LiveData<List<Story>> loadAllStories();
 
     @Insert
     void insertTask(Story storyEntry);
@@ -28,6 +28,6 @@ public interface StoryDao {
     // COMPLETED (1) Create a Query method named loadTaskById that receives an int id and returns a TaskEntry Object
     // The query for this method should get all the data for that id in the task table
     @Query("SELECT * FROM story WHERE userId = :id")
-    Story loadStoryById(int id);
+   LiveData<Story> loadStoryById(int id);
 
 }

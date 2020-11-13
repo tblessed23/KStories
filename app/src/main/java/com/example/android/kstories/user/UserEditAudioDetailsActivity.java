@@ -1,9 +1,14 @@
 package com.example.android.kstories.user;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +18,8 @@ import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
+import com.example.android.kstories.model.UserEditViewModel;
+import com.example.android.kstories.model.UserEditViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
@@ -66,22 +73,20 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                // COMPLETED (9) Remove the logging and the call to loadTaskById, this is done in the ViewModel now
+                // COMPLETED (10) Declare a AddTaskViewModelFactory using mDb and mTaskId
+                UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+                // COMPLETED (11) Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
+                // for that use the factory created above AddTaskViewModel
+                final UserEditViewModel viewModel
+                        = ViewModelProviders.of(this, factory).get(UserEditViewModel.class);
+
+                // COMPLETED (12) Observe the LiveData object in the ViewModel. Use it also when removing the observer
+                viewModel.getTask().observe(this, new Observer<Story>() {
                     @Override
-                    public void run() {
-                        // COMPLETED (5) Use the loadTaskById method to retrieve the task with id mTaskId and
-                        // assign its value to a final TaskEntry variable
-                        final Story task = mDb.storyDao().loadStoryById(mTaskId);
-                        // COMPLETED (6) Call the populateUI method with the retrieve tasks
-                        // Remember to wrap it in a call to runOnUiThread
-                        // We will be able to simplify this once we learn more
-                        // about Android Architecture Components
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                populateUI(task);
-                            }
-                        });
+                    public void onChanged(@Nullable Story taskEntry) {
+                        viewModel.getTask().removeObserver(this);
+                        populateUI(taskEntry);
                     }
                 });
             }

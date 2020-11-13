@@ -1,7 +1,11 @@
 package com.example.android.kstories.user;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +23,7 @@ import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
+import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +39,7 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
     // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private UserStoryAdapter mAdapter;
+
 
     // COMPLETED (1) Create AppDatabase member variable for the Database
     private AppDatabase mDb;
@@ -92,8 +98,6 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
                         List<Story> tasks = mAdapter.getTasks();
                         // COMPLETED (4) Call deleteTask in the taskDao with the task at that position
                         mDb.storyDao().deleteTask(tasks.get(position));
-                        // COMPLETED (6) Call retrieveTasks method to refresh the UI
-                        retrieveTasks();
                     }
                 });
             }
@@ -104,30 +108,20 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
         //Initialize Database
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-
+        setupViewModel();
 
     }
-    private void retrieveTasks() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    private void setupViewModel() {
+
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        viewModel.getTasks().observe(this, new Observer<List<Story>>() {
             @Override
-            public void run() {
-                final List<Story> tasks = mDb.storyDao().loadAllStories();
-                // We will be able to simplify this once we learn more
-                // about Android Architecture Components
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.setTasks(tasks);
-                    }
-                });
+            public void onChanged(@Nullable List<Story> taskEntries) {
+                Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
+                mAdapter.setTasks(taskEntries);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-      retrieveTasks();
     }
 
     @Override

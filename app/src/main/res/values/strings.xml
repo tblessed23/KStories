@@ -26,4 +26,7 @@
     <string name="add_button">Save</string>
     <string name="edit_task_description">Describe your taskEntry...</string>
     <string name="update_button">Update</string>
+
+    <!--Menu/options_menu-->
+    <string name="delete_menu">Delete</string>
 </resources>

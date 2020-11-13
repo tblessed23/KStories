@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -16,7 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
+import com.example.android.kstories.model.AppDatabase;
+import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
+import com.example.android.kstories.model.UserEditViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -31,6 +36,8 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     // Class variables for the List that holds task data and the Context
     private List<Story> mStoryEntries;
     private Context mContext;
+    UserEditViewModel userModel;
+   private AppDatabase mDb = AppDatabase.getInstance(mContext);
     // Date formatter
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
@@ -88,6 +95,41 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         mContext.startActivity(intent);
             }
         });
+
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(mContext, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                //handle menu1 click
+
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        List<Story> tasks =  getTasks();
+                                        mDb.storyDao().deleteTask(mStoryEntries.get(position));
+                                    }
+                                });
+                                break;
+
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
         //Set values
         holder.titleView.setText(title);
         holder.storyStateView.setText(storystate);
@@ -143,6 +185,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView storyCountyView;
         TextView storyStateView;
         TextView updatedAtView;
+        TextView buttonViewOption;
         Button editStoryDetails;
 
         /**
@@ -162,6 +205,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             storyCountyView=itemView.findViewById(R.id.county_of_story);
             storyStateView=itemView.findViewById(R.id.state_of_story);
             editStoryDetails=itemView.findViewById(R.id.edit_saved_audio);
+            buttonViewOption = (TextView) itemView.findViewById(R.id.textViewOptions);
             itemView.setOnClickListener(this);
         }
 
