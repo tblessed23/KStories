@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel;
 import com.firebase.ui.auth.data.model.User;
 
 public class UserEditViewModel extends ViewModel {
+
+    private UserEditRepository repo;
+
     public UserEditViewModel(){ };
     // COMPLETED (6) Add a task member variable for the TaskEntry object wrapped in a LiveData
     private LiveData<Story> task;
@@ -22,5 +25,5 @@ public class UserEditViewModel extends ViewModel {
     }
 
    ;
-
+    public void deleteTask(Story story) {repo.deleteTask(story);}
 }

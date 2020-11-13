@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -22,6 +23,7 @@ import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
+import com.firebase.ui.auth.data.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -37,7 +39,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     private List<Story> mStoryEntries;
     private Context mContext;
     UserEditViewModel userModel;
-   private AppDatabase mDb = AppDatabase.getInstance(mContext);
+
     // Date formatter
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
@@ -108,19 +110,22 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menu1:
-                                //handle menu1 click
+                        if (item.getItemId() == R.id.menu1) {//handle menu1 click
+                            Story story = new Story();
+                            int elementId = mStoryEntries.get(position).getUserId();
+                            story.setUserId(elementId);
+                            //Story myWord = getTasks().get(elementId);
 
-                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        List<Story> tasks =  getTasks();
-                                        mDb.storyDao().deleteTask(mStoryEntries.get(position));
-                                    }
-                                });
-                                break;
-
+                            // Delete the word
+                            userModel.deleteTask(story);
+                            //userModel.deleteItem(users);
+//                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        List<Story> tasks =  getTasks();
+//                                        mDb.storyDao().deleteTask(mStoryEntries.get(position));
+//                                    }
+//                                });
                         }
                         return false;
                     }

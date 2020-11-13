@@ -71,6 +71,10 @@ public class Story  {
         this.updatedAt = updatedAt;
     }
 
+    public Story() {
+
+    }
+
 
     public int getUserId() {
         return userId;
