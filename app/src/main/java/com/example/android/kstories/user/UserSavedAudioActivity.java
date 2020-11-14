@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,35 +75,7 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(decoration);
 
-        /*
-         Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
-         An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
-         and uses callbacks to signal when a user is performing these actions.
-         */
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
 
-            // Called when a user swipes left or right on a ViewHolder
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
-                // COMPLETED (1) Get the diskIO Executor from the instance of AppExecutors and
-                // call the diskIO execute method with a new Runnable and implement its run method
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // COMPLETED (3) get the position from the viewHolder parameter
-                        int position = viewHolder.getAdapterPosition();
-                        List<Story> tasks = mAdapter.getTasks();
-                        // COMPLETED (4) Call deleteTask in the taskDao with the task at that position
-                        mDb.storyDao().deleteTask(tasks.get(position));
-                    }
-                });
-            }
-        }).attachToRecyclerView(mRecyclerView);
 
 //
 
@@ -113,8 +87,8 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
     }
     private void setupViewModel() {
 
-        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-
+        //MainViewModel viewModel2 = ViewModelProvider(this).get(MainViewModel.class);
+        MainViewModel viewModel=new ViewModelProvider((ViewModelStoreOwner) this).get(MainViewModel.class);
         viewModel.getTasks().observe(this, new Observer<List<Story>>() {
             @Override
             public void onChanged(@Nullable List<Story> taskEntries) {

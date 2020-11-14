@@ -30,8 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.kstories.R;
+import com.example.android.kstories.model.AppDatabase;
+import com.example.android.kstories.model.AppExecutors;
+import com.example.android.kstories.model.Story;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -88,10 +92,24 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mAudioStorageReference;
 
+
+    // Member variable for the Database
+    private AppDatabase mDb;
+    Button mButton;
+    TextInputEditText mEditT, mEditState;
+    private int mTaskId = DEFAULT_TASK_ID;
+    // Constant for default task id to be used when not in update mode
+    private static final int DEFAULT_TASK_ID = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_record_audio);
+
+        initViews();
+
+        // Initialize member variable for the data base
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
 
         //Intialize Firebase Components
@@ -115,6 +133,19 @@ public class UserRecordAudioActivity extends AppCompatActivity {
                 REQUEST_RECORD_AUDIO_PERMISSION);
 
 
+    }
+
+    private void initViews() {
+        mEditT=findViewById(R.id.story_title);
+        mEditState=findViewById(R.id.story_state);
+
+        mButton = findViewById(R.id.saveButton);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSaveButtonClicked();
+            }
+        });
     }
 
     //Create file path for file uploaded into Firebase Storage
@@ -317,6 +348,44 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             minute = 0;
         }
         return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
+
+    /**
+     * onSaveButtonClicked is called when the "save" button is clicked.
+     * It retrieves user input and inserts that new task data into the underlying database.
+     */
+    public void onSaveButtonClicked() {
+        // COMPLETED (5) Create a description variable and assign to it the value in the edit text
+        //String description = mEditText.getText().toString();
+        String audiotitle = mEditT.getText().toString();
+        String storystate = mEditState.getText().toString();
+
+
+        //Create a date variable and assign to it the current Date
+        Date date = new Date();
+
+
+        // COMPLETED (4) Make taskEntry final so it is visible inside the run method
+        final Story taskEntry = new Story(audiotitle,storystate, date);
+        // COMPLETED (2) Get the diskIO Executor from the instance of AppExecutors and
+        // call the diskIO execute method with a new Runnable and implement its run method
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                // COMPLETED (9) insert the task only if mTaskId matches DEFAULT_TASK_ID
+                // Otherwise update it
+                // call finish in any case
+                if (mTaskId == DEFAULT_TASK_ID) {
+                    // insert new task
+                    mDb.storyDao().insertTask(taskEntry);
+                } else {
+                    //update task
+                    taskEntry.setUserId(mTaskId);
+                    mDb.storyDao().updateTask(taskEntry);
+                }
+                finish();
+            }
+        });
     }
 
 }

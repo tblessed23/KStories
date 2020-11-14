@@ -21,6 +21,7 @@
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="edit">Edit Files</string>
+    <string name="record_message">Add Additional information about your story in the Saved Audio section of your account.</string>
 
     <!--UserEditAudioDetailsActivity-->
     <string name="add_button">Save</string>

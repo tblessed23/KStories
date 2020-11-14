@@ -23,7 +23,7 @@ public interface StoryDao {
     void updateTask(Story storyEntry);
 
     @Delete
-    void deleteTask(Story storyEntry);
+    void deleteTask(Story story);
 
     // COMPLETED (1) Create a Query method named loadTaskById that receives an int id and returns a TaskEntry Object
     // The query for this method should get all the data for that id in the task table

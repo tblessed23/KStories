@@ -39,7 +39,6 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     // Constant for logging
     private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
-    EditText mEditText;
     TextInputEditText mEditT, mEditAFN, mEditALN, mEditFN, mEditCity, mEditCounty, mEditState;
 
 
@@ -60,7 +59,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
         initViews();
 
-        // COMPLETED (4) Initialize member variable for the data base
+        // Initialize member variable for the data base
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
@@ -73,15 +72,15 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                // COMPLETED (9) Remove the logging and the call to loadTaskById, this is done in the ViewModel now
-                // COMPLETED (10) Declare a AddTaskViewModelFactory using mDb and mTaskId
+                // CRemove the logging and the call to loadTaskById, this is done in the ViewModel now
+                // Declare a AddTaskViewModelFactory using mDb and mTaskId
                 UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
-                // COMPLETED (11) Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
+                // Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
                 // for that use the factory created above AddTaskViewModel
                 final UserEditViewModel viewModel
                         = ViewModelProviders.of(this, factory).get(UserEditViewModel.class);
 
-                // COMPLETED (12) Observe the LiveData object in the ViewModel. Use it also when removing the observer
+                // Observe the LiveData object in the ViewModel. Use it also when removing the observer
                 viewModel.getTask().observe(this, new Observer<Story>() {
                     @Override
                     public void onChanged(@Nullable Story taskEntry) {
@@ -105,7 +104,6 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      * initViews is called from onCreate to init the member variable views
      */
     private void initViews() {
-        //mEditText = findViewById(R.id.editTextTaskDescription);
         mEditAFN = findViewById(R.id.ancestor_first_name);
         mEditALN= findViewById(R.id.ancestor_last_name);
         mEditT=findViewById(R.id.story_title);
@@ -131,12 +129,12 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      * @param stories the taskEntry to populate the UI
      */
     private void populateUI(Story stories) {
-        // COMPLETED (7) return if the task is null
+        //  return if the task is null
         if (stories == null) {
             return;
         }
 
-        // COMPLETED (8) use the variable task to populate the UI
+        // use the variable task to populate the UI
         mEditT.setText(stories.getAudiotitle());
         mEditAFN.setText(stories.getAncestorfirstname());
         mEditALN.setText(stories.getAncestorlastname());
@@ -152,8 +150,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      * It retrieves user input and inserts that new task data into the underlying database.
      */
     public void onSaveButtonClicked() {
-        // COMPLETED (5) Create a description variable and assign to it the value in the edit text
-        //String description = mEditText.getText().toString();
+
         String audiotitle = mEditT.getText().toString();
         String ancestorfirstname = mEditAFN.getText().toString();
         String ancestorlastname = mEditALN.getText().toString();
@@ -167,9 +164,9 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         Date date = new Date();
 
 
-        // COMPLETED (4) Make taskEntry final so it is visible inside the run method
+        // Make taskEntry final so it is visible inside the run method
         final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, date);
-        // COMPLETED (2) Get the diskIO Executor from the instance of AppExecutors and
+        // Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

@@ -15,14 +15,19 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
+import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
+import com.example.android.kstories.model.UserEditViewModelFactory;
 import com.firebase.ui.auth.data.model.User;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +43,12 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     // Class variables for the List that holds task data and the Context
     private List<Story> mStoryEntries;
     private Context mContext;
-    UserEditViewModel userModel;
+   // UserEditViewModel userModel;
+   private int mTaskId = DEFAULT_TASK_ID;
+    // Constant for default task id to be used when not in update mode
+    private static final int DEFAULT_TASK_ID = -1;
+    // Member variable for the Database
+    private AppDatabase mDb;
 
     // Date formatter
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
@@ -77,7 +87,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     @Override
     public void onBindViewHolder(final StoryViewHolder holder, final int position) {
         // Determine the values of the wanted data
-        Story stories = mStoryEntries.get(position);
+        final Story stories = mStoryEntries.get(position);
         final String title = stories.getAudiotitle();
         final String ancestorfn = stories.getAncestorfirstname();
         final String ancestorln = stories.getAncestorlastname();
@@ -86,7 +96,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storycounty = stories.getStorycounty();
         final String storystate = stories.getStorystate();
         final String updatedAt = dateFormat.format(stories.getUpdatedAt());
-
+        mDb = AppDatabase.getInstance(mContext);
         holder.editStoryDetails.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -110,22 +120,30 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.menu1) {//handle menu1 click
-                            Story story = new Story();
-                            int elementId = mStoryEntries.get(position).getUserId();
-                            story.setUserId(elementId);
-                            //Story myWord = getTasks().get(elementId);
 
-                            // Delete the word
-                            userModel.deleteTask(story);
-                            //userModel.deleteItem(users);
-//                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        List<Story> tasks =  getTasks();
-//                                        mDb.storyDao().deleteTask(mStoryEntries.get(position));
-//                                    }
-//                                });
+                        // Delete the word
+
+                        if (item.getItemId() == R.id.menu1) {//handle menu1 click
+
+                            //Run deletion off the main thread
+                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // insert the task only if mTaskId matches DEFAULT_TASK_ID
+                                    // Otherwise update it
+                                    // call finish in any case
+                                    if (mTaskId == DEFAULT_TASK_ID) {
+                                        // delete task
+                                       // mDb.storyDao().deleteTask(stories);
+                                       // mStoryEntries.remove(stories);
+
+                                       UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+                                        UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext, factory).get(UserEditViewModel.class);
+                                        userModel.deleteTask(stories);
+
+                                    }
+                                }
+                            });
                         }
                         return false;
                     }
@@ -146,6 +164,9 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         holder.updatedAtView.setText(updatedAt);
 
     }
+
+
+
 
     /*
 

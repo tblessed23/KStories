@@ -71,9 +71,13 @@ public class Story  {
         this.updatedAt = updatedAt;
     }
 
-    public Story() {
-
+    @Ignore
+    public Story(String audiotitle, String storystate, Date updatedAt){
+        this.audiotitle = audiotitle;
+        this.storystate = storystate;
+        this.updatedAt = updatedAt;
     }
+
 
 
     public int getUserId() {
