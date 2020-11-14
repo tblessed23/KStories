@@ -3,17 +3,13 @@ package com.example.android.kstories.user;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,18 +20,16 @@ import android.widget.Toast;
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
-import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-public class UserSavedAudioActivity extends AppCompatActivity implements UserStoryAdapter.ItemClickListener {
+public class UserSavedAudioActivity extends AppCompatActivity  {
    //Constant for logging
     private static final String TAG = MainActivity.class.getSimpleName();
     // Member variables for the adapter and RecyclerView
@@ -48,7 +42,7 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_audio);
+        setContentView(R.layout.activity_saved_user_audio);
 
 //        Button button=findViewById(R.id.download);
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -69,15 +63,12 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter and attach it to the RecyclerView
-        mAdapter = new UserStoryAdapter(this, this);
+        mAdapter = new UserStoryAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(decoration);
 
-
-
-//
 
         //Initialize Database
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -98,13 +89,7 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
         });
     }
 
-    @Override
-    public void onItemClickListener(int itemId) {
-        // Launch AddTaskActivity adding the itemId as an extra in the intent
-//        Intent intent = new Intent(UserSavedAudioActivity.this, UserEditAudioDetailsActivity.class);
-//        intent.putExtra(UserEditAudioDetailsActivity.EXTRA_TASK_ID, itemId);
-//        startActivity(intent);
-    }
+
 
 //    private void downloadfile() {
 //
@@ -112,18 +97,18 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
 //
 //                FirebaseStorage storage = FirebaseStorage.getInstance();
 //                StorageReference storageRef = storage.getReferenceFromUrl("gs://kstories-900ec.appspot.com").child("k_audio");
-//
-////                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener() {
-////                    @Override
-////                    public void onSuccess(Uri uri) {
-////                        Toast.makeText(UserAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
-////                        Log.i("Main", "File uri: " + uri.toString());
-////                    }
-////                });
-//
-//                storageRef.child("new_kaudio.3pg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+//                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener() {
 //                    @Override
-//                    public void onSuccess(Uri uri) {
+//                   public void onSuccess(Uri uri) {
+//                        Toast.makeText(UserSavedAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
+//                        Log.i("Main", "File uri: " + uri.toString());
+//                    }
+//                });
+
+//                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                   public void onSuccess(Uri uri) {
 //                        // Got the download URL for 'users/me/profile.png'
 //                        //Toast.makeText(UserAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
 //                        Log.i("Main", "File uri: " + uri.toString());
@@ -133,7 +118,7 @@ public class UserSavedAudioActivity extends AppCompatActivity implements UserSto
 //                    @Override
 //                    public void onFailure(@NonNull Exception exception) {
 //                        // Handle any errors
-//                        Toast.makeText(UserAudioActivity.this, "no sucess", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(UserSavedAudioActivity.this, "no sucess", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
 //

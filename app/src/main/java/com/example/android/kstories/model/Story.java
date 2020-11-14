@@ -33,6 +33,7 @@ public class Story  {
     private String ancestorlastname;
     private String familyname;
     @ColumnInfo(name = "updated_at")
+    private String audioUrl;
     private Date updatedAt;
 
 
@@ -71,13 +72,18 @@ public class Story  {
         this.updatedAt = updatedAt;
     }
 
-    @Ignore
-    public Story(String audiotitle, String storystate, Date updatedAt){
-        this.audiotitle = audiotitle;
-        this.storystate = storystate;
-        this.updatedAt = updatedAt;
+
+    public Story(String audiotitlew, String audioUrlw, String storystatew, Date updatedAtw){
+
+        this.audiotitle = audiotitlew;
+        this.audioUrl = audioUrlw;
+        this.storystate = storystatew;
+        this.updatedAt = updatedAtw;
     }
 
+    public Story() {
+
+    }
 
 
     public int getUserId() {
@@ -142,6 +148,14 @@ public class Story  {
 
     public void setFamilyname(String familyname){
         this.familyname = familyname;
+    }
+
+    public String getAudioUrl() {
+        return audioUrl;
+    }
+
+    public void setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
     }
 
     public Date getUpdatedAt() {

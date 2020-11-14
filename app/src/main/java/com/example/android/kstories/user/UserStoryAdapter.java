@@ -36,10 +36,10 @@ import java.util.Locale;
 
 public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.StoryViewHolder> {
     // Constant for date format
-    private static final String DATE_FORMAT = "dd/MM/yyy";
+    private static final String DATE_FORMAT = "MM/dd/yyy";
 
     // Member variable to handle item clicks
-    final private ItemClickListener mItemClickListener;
+  //  final private ItemClickListener mItemClickListener;
     // Class variables for the List that holds task data and the Context
     private List<Story> mStoryEntries;
     private Context mContext;
@@ -50,6 +50,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     // Member variable for the Database
     private AppDatabase mDb;
 
+
     // Date formatter
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
@@ -57,11 +58,11 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
      * Constructor for the TaskAdapter that initializes the Context.
      *
      * @param context  the current Context
-     * @param listener the ItemClickListener
+     *
      */
-    public UserStoryAdapter(Context context, ItemClickListener listener) {
+    public UserStoryAdapter(Context context) {
         mContext = context;
-        mItemClickListener = listener;
+       // mItemClickListener = listener;
     }
 
     /**
@@ -95,6 +96,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storycity = stories.getStorycity();
         final String storycounty = stories.getStorycounty();
         final String storystate = stories.getStorystate();
+        final String audiourl = stories.getAudioUrl();
         final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
         holder.editStoryDetails.setOnClickListener(new View.OnClickListener() {
@@ -134,12 +136,13 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                                     // call finish in any case
                                     if (mTaskId == DEFAULT_TASK_ID) {
                                         // delete task
-                                       // mDb.storyDao().deleteTask(stories);
-                                       // mStoryEntries.remove(stories);
+                                        mDb.storyDao().deleteTask(stories);
+                                       mStoryEntries.remove(stories);
 
-                                       UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
-                                        UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext, factory).get(UserEditViewModel.class);
-                                        userModel.deleteTask(stories);
+                                       //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+//                                       UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext).get(UserEditViewModel.class);
+//                                        userModel.deleteTask(stories);
+//                                        .clear();
 
                                     }
                                 }
@@ -162,6 +165,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         holder.ancestorFNView.setText(ancestorfn);
         holder.ancestorLNView.setText(ancestorln);
         holder.updatedAtView.setText(updatedAt);
+        holder.audioURLView.setText(audiourl);
 
     }
 
@@ -212,6 +216,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView storyStateView;
         TextView updatedAtView;
         TextView buttonViewOption;
+        TextView audioURLView;
         Button editStoryDetails;
 
         /**
@@ -232,13 +237,14 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             storyStateView=itemView.findViewById(R.id.state_of_story);
             editStoryDetails=itemView.findViewById(R.id.edit_saved_audio);
             buttonViewOption = (TextView) itemView.findViewById(R.id.textViewOptions);
+           audioURLView=itemView.findViewById(R.id.audioUrl);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int elementId = mStoryEntries.get(getAdapterPosition()).getUserId();
-            mItemClickListener.onItemClickListener(elementId);
+
         }
     }
 }

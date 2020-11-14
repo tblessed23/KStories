@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserEditViewModel extends ViewModel {
 
-    private UserEditRepository mRepository;
+  //  private UserEditRepository mRepository;
     private LiveData<Story> task;
 
 
@@ -26,6 +26,7 @@ public class UserEditViewModel extends ViewModel {
     }
 
 
+
     // COMPLETED (7) Create a getter for the task variable
     public LiveData<Story> getTask() {
         return task;
@@ -33,8 +34,8 @@ public class UserEditViewModel extends ViewModel {
 
    ;
 
-    public void deleteTask(Story story) {
-        mRepository.deleteTask(story);
-    }
+//    public void deleteTask(Story story) {
+//        deleteTask(story);
+//    }
 
 }

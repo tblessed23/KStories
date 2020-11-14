@@ -1,34 +1,26 @@
 package com.example.android.kstories.user;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
@@ -50,8 +42,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import kotlin.jvm.internal.Intrinsics;
 
 public class UserRecordAudioActivity extends AppCompatActivity {
 
@@ -91,6 +83,7 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mAudioStorageReference;
+    private Uri audioUri;
 
 
     // Member variable for the Database
@@ -136,10 +129,10 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mEditT=findViewById(R.id.story_title);
-        mEditState=findViewById(R.id.story_state);
+        mEditT=findViewById(R.id.record_story_title);
+        mEditState=findViewById(R.id.record_story_state);
 
-        mButton = findViewById(R.id.saveButton);
+        mButton = findViewById(R.id.saveRecordButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,8 +200,6 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     public void editButton(View view) throws IOException {
 
-
-
         Intent recordAudioIntent = new Intent(UserRecordAudioActivity.this, UserAudioDetailActivity.class);
         startActivity(recordAudioIntent);
     }
@@ -260,16 +251,17 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             mediaRecorder = null;
             isRecording = false;
         } else {
+
             mediaPlayer.release();
             mediaPlayer = null;
             mRecordButton.setEnabled(true);
         }
 
-        try {
-            uploadAudioToFirebaseStorage();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            uploadAudioToFirebaseStorage();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void audioSetup()
@@ -355,10 +347,10 @@ public class UserRecordAudioActivity extends AppCompatActivity {
      * It retrieves user input and inserts that new task data into the underlying database.
      */
     public void onSaveButtonClicked() {
-        // COMPLETED (5) Create a description variable and assign to it the value in the edit text
-        //String description = mEditText.getText().toString();
+        // Create a variable and assign to it the value in the edit text
         String audiotitle = mEditT.getText().toString();
         String storystate = mEditState.getText().toString();
+        String audiourl = downloadfile();
 
 
         //Create a date variable and assign to it the current Date
@@ -366,7 +358,7 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
 
         // COMPLETED (4) Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle,storystate, date);
+        final Story taskEntry = new Story(audiotitle,storystate, audiourl, date);
         // COMPLETED (2) Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -378,14 +370,44 @@ public class UserRecordAudioActivity extends AppCompatActivity {
                 if (mTaskId == DEFAULT_TASK_ID) {
                     // insert new task
                     mDb.storyDao().insertTask(taskEntry);
-                } else {
-                    //update task
-                    taskEntry.setUserId(mTaskId);
-                    mDb.storyDao().updateTask(taskEntry);
                 }
                 finish();
             }
         });
+    }
+
+    private String downloadfile() {
+        try {
+            uploadAudioToFirebaseStorage();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://kstories-900ec.appspot.com").child("k_audio");
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                //Toast.makeText(UserAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("Main", "File uri: " + uri.toString());
+                Story upload = new Story();
+                String varnothing= uri.toString();
+                upload.setAudioUrl(varnothing);
+                mDb.storyDao().insertTask(upload);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Toast.makeText(UserRecordAudioActivity.this, "no sucess", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //return;
+        return null;
     }
 
 }
