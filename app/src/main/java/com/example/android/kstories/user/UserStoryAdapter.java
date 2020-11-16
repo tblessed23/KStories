@@ -97,7 +97,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storycounty = stories.getStorycounty();
         final String storystate = stories.getStorystate();
         final String audiourl = stories.getAudioUrl();
-        final String updatedAt = dateFormat.format(stories.getUpdatedAt());
+       // final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
         holder.editStoryDetails.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -164,7 +164,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         holder.familynameView.setText(familyname);
         holder.ancestorFNView.setText(ancestorfn);
         holder.ancestorLNView.setText(ancestorln);
-        holder.updatedAtView.setText(updatedAt);
+       // holder.updatedAtView.setText(updatedAt);
         holder.audioURLView.setText(audiourl);
 
     }
@@ -214,7 +214,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView storyCityView;
         TextView storyCountyView;
         TextView storyStateView;
-        TextView updatedAtView;
+       // TextView updatedAtView;
         TextView buttonViewOption;
         TextView audioURLView;
         Button editStoryDetails;
@@ -228,7 +228,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             super(itemView);
 
             titleView = itemView.findViewById(R.id.audio_title);
-            updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
+            //updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
             ancestorFNView= itemView.findViewById(R.id.ancestor_first_name);
             ancestorLNView= itemView.findViewById(R.id.ancestor_last_name);
             familynameView=itemView.findViewById(R.id.family_name);

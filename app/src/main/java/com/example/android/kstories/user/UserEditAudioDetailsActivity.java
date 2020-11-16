@@ -162,11 +162,11 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
 
         //Create a date variable and assign to it the current Date
-        Date date = new Date();
+       // Date date = new Date();
 
 
         // Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, date);
+        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname);
         // Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

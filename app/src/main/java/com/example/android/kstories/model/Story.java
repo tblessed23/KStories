@@ -72,6 +72,17 @@ public class Story  {
         this.updatedAt = updatedAt;
     }
 
+    public Story(String audiotitleq, String storycityq, String storycountyq, String storystateq, String ancestorfirstnameq, String ancestorlastnameq, String familynameq) {
+        this.audiotitle = audiotitleq;
+        this.storycity = storycityq;
+        this.storycounty = storycountyq;
+        this.storystate = storystateq;
+        this.ancestorfirstname = ancestorfirstnameq;
+        this.ancestorlastname = ancestorlastnameq;
+        this.familyname = familynameq;
+
+    }
+
 
     public Story(String audiotitlew, String audioUrlw, String storystatew, Date updatedAtw){
 

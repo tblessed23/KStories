@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
+
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
@@ -66,10 +68,13 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private TextView mPass;
     private TextView mDuration;
     private TextView mDue;
+    View view;
 
     TextView textView;
     CountDownTimer countDownTimer;
     int second = -1, minute, hour;
+
+    private String practicekisa = customFilepath();
 
 
 
@@ -101,9 +106,25 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
         initViews();
 
+//        RecordAudio recording = new RecordAudio(this);
+//        try {
+//            recording.playButton(view);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        recording.recordButton(view);
+//        recording.stopButton(view);
+//        recording.recorderTime();
+//        recording.showTimer();
+
         // Initialize member variable for the data base
         mDb = AppDatabase.getInstance(getApplicationContext());
 
+        //Data Handling
+        final String DATE_FORMAT = "MM/dd/yyy";
+        // Date formatter
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,
+                Locale.getDefault());
 
         //Intialize Firebase Components
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -114,7 +135,8 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 //                ("k_audio");
 
         // Create a storage reference from our app
-    mAudioStorageReference = mFirebaseStorage.getReference().child("k_audio").child(customFilepath());
+        mAudioStorageReference = mFirebaseStorage.getReference().child
+                ("k_audio").child(customFilepath());
 
 
 
@@ -150,36 +172,41 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     }
 
 
-    private void uploadAudioToFirebaseStorage() throws FileNotFoundException {
-
-        InputStream stream = new FileInputStream(new File(audioFilePath));
-
-        UploadTask uploadTask = mAudioStorageReference.putStream(stream);
-
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Toast.makeText(UserRecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new
-                                        OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                            @Override
-                                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                // taskSnapshot.getMetadata() contains file metadata such as
-                                                //size, content-type, etc.
-                                                        // ...
-                                                        // Create file metadata including the content type
-                StorageMetadata metadata = new StorageMetadata.Builder()
-                        .setContentType("audio/3pgg")
-                        //.setCustomMetadata("myCustomProperty", "myValue")
-                        .build();
-
-        Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console", Toast.LENGTH_SHORT).show();
-
-                                            }
-                                        });
-    }
+//    private void uploadAudioToFirebaseStorage() throws FileNotFoundException {
+//
+//        InputStream stream = new FileInputStream(new File(audioFilePath));
+//
+//        UploadTask uploadTask = mAudioStorageReference.putStream(stream);
+//
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//                Toast.makeText(UserRecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
+//            }
+//        }).addOnSuccessListener(new
+//
+//                                        OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                            @Override
+//                                            public void onSuccess
+//                                                    (UploadTask.TaskSnapshot taskSnapshot) {
+//                                                // taskSnapshot.getMetadata()
+//                                                //contains file metadata such as
+//                                                //size, content-type, etc.
+//                                                // ...
+//                                                // Create file
+//                                                //metadata including the content type
+////                StorageMetadata metadata = new StorageMetadata.Builder()
+////                        .setContentType("audio/3pgg")
+////                        //.setCustomMetadata("myCustomProperty", "myValue")
+////                        .build();
+//
+//                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console",
+//                                                        Toast.LENGTH_SHORT).show();
+//
+//                                            }
+//                                        });
+//    }
 
 
 
@@ -200,7 +227,8 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     public void editButton(View view) throws IOException {
 
-        Intent recordAudioIntent = new Intent(UserRecordAudioActivity.this, UserAudioDetailActivity.class);
+        Intent recordAudioIntent = new Intent(UserRecordAudioActivity.this,
+                UserAudioDetailActivity.class);
         startActivity(recordAudioIntent);
     }
 
@@ -266,11 +294,11 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     private void audioSetup()
     {
+
         textView = (TextView) findViewById(R.id.text);
         mRecordButton = (Button) findViewById(R.id.record_button);
         mPlayButton = (Button) findViewById(R.id.play_button);
         mStopButton = (Button) findViewById(R.id.stop_button);
-
         if (!hasMicrophone())
         {
             mStopButton.setEnabled(false);
@@ -302,11 +330,14 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private String [] permissions = {Manifest.permission.RECORD_AUDIO};
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[]
+            permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions,
+                grantResults);
         switch (requestCode){
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                permissionToRecordAccepted  = grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED;
                 break;
         }
         if (!permissionToRecordAccepted ) finish();
@@ -344,7 +375,8 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     /**
      * onSaveButtonClicked is called when the "save" button is clicked.
-     * It retrieves user input and inserts that new task data into the underlying database.
+     * It retrieves user input and inserts that new task data into the
+     underlying database.
      */
     public void onSaveButtonClicked() {
         // Create a variable and assign to it the value in the edit text
@@ -357,14 +389,19 @@ public class UserRecordAudioActivity extends AppCompatActivity {
         Date date = new Date();
 
 
-        // COMPLETED (4) Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle,storystate, audiourl, date);
-        // COMPLETED (2) Get the diskIO Executor from the instance of AppExecutors and
-        // call the diskIO execute method with a new Runnable and implement its run method
+        // COMPLETED (4) Make taskEntry final so it is visible inside the run
+       // method
+        final Story taskEntry = new Story(audiotitle,storystate, audiourl,
+                date);
+        // COMPLETED (2) Get the diskIO Executor from the instance of
+       // AppExecutors and
+        // call the diskIO execute method with a new Runnable and implement
+        //its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                // COMPLETED (9) insert the task only if mTaskId matches DEFAULT_TASK_ID
+                // COMPLETED (9) insert the task only if mTaskId matches
+                //DEFAULT_TASK_ID
                 // Otherwise update it
                 // call finish in any case
                 if (mTaskId == DEFAULT_TASK_ID) {
@@ -377,37 +414,88 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     }
 
     private String downloadfile() {
+
+//        try {
+//            uploadAudioToFirebaseStorage();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+        InputStream stream = null;
         try {
-            uploadAudioToFirebaseStorage();
+            stream = new FileInputStream(new File(audioFilePath));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://kstories-900ec.appspot.com").child("k_audio");
-
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        Log.i("Mains", "File uri: " + stream);
+        UploadTask uploadTask = mAudioStorageReference.putStream(stream);
+        Log.i("Mainu", "File uri: " + uploadTask);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                //Toast.makeText(UserAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
-                Log.i("Main", "File uri: " + uri.toString());
-                Story upload = new Story();
-                String varnothing= uri.toString();
-                upload.setAudioUrl(varnothing);
-                mDb.storyDao().insertTask(upload);
-
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(UserRecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnSuccessListener(new
+
+                                        OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess
+                                                    (UploadTask.TaskSnapshot taskSnapshot) {
+                                                // taskSnapshot.getMetadata()
+                                                //contains file metadata such as
+                                                //size, content-type, etc.
+                                                // ...
+                                                // Create file
+                                                //metadata including the content type
+//                StorageMetadata metadata = new StorageMetadata.Builder()
+//                        .setContentType("audio/3pgg")
+//                        //.setCustomMetadata("myCustomProperty", "myValue")
+//                        .build();
+                                                Log.i("Mainq", "File uri: " + taskSnapshot.toString());
+                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console" ,
+                                                        Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageRef = storage.getReferenceFromUrl
+                ("gs://kstories-900ec.appspot.com").child("k_audio");
+
+
+
+        storageRef.getDownloadUrl().addOnSuccessListener
+
+                (new OnSuccessListener<Uri>() {
+
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.i("Mainstore", "File uri: " + storageRef);
+                        // Got the download URL for 'users/me/profile.png'
+                        //Toast.makeText(UserRecordAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
+                        Log.i("Main", "File uri: " + uri.toString());
+                        Story upload = new Story();
+                        String varnothing= uri.toString();
+                        upload.setAudioUrl(varnothing);
+                        mDb.storyDao().insertTask(upload);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
-                Toast.makeText(UserRecordAudioActivity.this, "no sucess", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserRecordAudioActivity.this, "no sucess",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
         //return;
         return null;
     }
+
+
 
 }
