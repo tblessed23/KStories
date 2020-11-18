@@ -1,5 +1,6 @@
 package com.example.android.kstories.user;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -39,7 +40,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     private static final String DATE_FORMAT = "MM/dd/yyy";
 
     // Member variable to handle item clicks
-  //  final private ItemClickListener mItemClickListener;
+    final private ItemClickListener mItemClickListener;
     // Class variables for the List that holds task data and the Context
     private List<Story> mStoryEntries;
     private Context mContext;
@@ -60,9 +61,9 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
      * @param context  the current Context
      *
      */
-    public UserStoryAdapter(Context context) {
+    public UserStoryAdapter(Context context, ItemClickListener listener) {
         mContext = context;
-       // mItemClickListener = listener;
+        mItemClickListener = listener;
     }
 
     /**
@@ -244,7 +245,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         @Override
         public void onClick(View view) {
             int elementId = mStoryEntries.get(getAdapterPosition()).getUserId();
-
+            mItemClickListener.onItemClickListener(elementId);
         }
     }
 }

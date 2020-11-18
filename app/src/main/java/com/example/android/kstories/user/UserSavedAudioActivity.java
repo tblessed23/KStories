@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-public class UserSavedAudioActivity extends AppCompatActivity  {
+public class UserSavedAudioActivity extends AppCompatActivity implements UserStoryAdapter.ItemClickListener  {
    //Constant for logging
     private static final String TAG = MainActivity.class.getSimpleName();
     // Member variables for the adapter and RecyclerView
@@ -63,7 +64,7 @@ public class UserSavedAudioActivity extends AppCompatActivity  {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter and attach it to the RecyclerView
-        mAdapter = new UserStoryAdapter(this);
+        mAdapter = new UserStoryAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
@@ -123,4 +124,10 @@ public class UserSavedAudioActivity extends AppCompatActivity  {
 //                });
 //
 //            }
+
+    @Override
+    public void onItemClickListener(int itemId) {
+        // Launch AddTaskActivity adding the itemId as an extra in the intent
+
+    }
 }

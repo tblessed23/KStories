@@ -44,6 +44,19 @@
             android:ellipsize="end" />
 
         <TextView
+            android:id="@+id/label_county_of_story"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textColor="#6000"
+            android:layout_below="@id/city_of_story"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <TextView
             android:id="@+id/county_of_story"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"

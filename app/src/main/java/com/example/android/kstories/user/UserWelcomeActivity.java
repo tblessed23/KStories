@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.android.kstories.MusicActivity;
 import com.example.android.kstories.R;
 
 public class UserWelcomeActivity extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class UserWelcomeActivity extends AppCompatActivity {
             // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
             @Override
             public void onClick(View view) {
-                Intent editProfileIntent = new Intent(UserWelcomeActivity.this, UserEditAudioDetailsActivity.class);
+                Intent editProfileIntent = new Intent(UserWelcomeActivity.this, MusicActivity.class);
                 startActivity(editProfileIntent);
 
 

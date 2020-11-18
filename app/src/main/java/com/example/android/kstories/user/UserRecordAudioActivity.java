@@ -27,8 +27,11 @@ import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -106,33 +109,12 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
         initViews();
 
-//        RecordAudio recording = new RecordAudio(this);
-//        try {
-//            recording.playButton(view);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        recording.recordButton(view);
-//        recording.stopButton(view);
-//        recording.recorderTime();
-//        recording.showTimer();
-
         // Initialize member variable for the data base
         mDb = AppDatabase.getInstance(getApplicationContext());
-
-        //Data Handling
-        final String DATE_FORMAT = "MM/dd/yyy";
-        // Date formatter
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,
-                Locale.getDefault());
 
         //Intialize Firebase Components
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-
-//        //Firebase References
-//        mAudioStorageReference = mFirebaseStorage.getReference().child
-//                ("k_audio");
 
         // Create a storage reference from our app
         mAudioStorageReference = mFirebaseStorage.getReference().child
@@ -165,48 +147,12 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     //Create file path for file uploaded into Firebase Storage
     private String customFilepath() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy_HH:mm", Locale.US);
         String date = dateFormat.format(new Date());
 
         return date + ".3pg";
     }
 
-
-//    private void uploadAudioToFirebaseStorage() throws FileNotFoundException {
-//
-//        InputStream stream = new FileInputStream(new File(audioFilePath));
-//
-//        UploadTask uploadTask = mAudioStorageReference.putStream(stream);
-//
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle unsuccessful uploads
-//                Toast.makeText(UserRecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
-//            }
-//        }).addOnSuccessListener(new
-//
-//                                        OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                            @Override
-//                                            public void onSuccess
-//                                                    (UploadTask.TaskSnapshot taskSnapshot) {
-//                                                // taskSnapshot.getMetadata()
-//                                                //contains file metadata such as
-//                                                //size, content-type, etc.
-//                                                // ...
-//                                                // Create file
-//                                                //metadata including the content type
-////                StorageMetadata metadata = new StorageMetadata.Builder()
-////                        .setContentType("audio/3pgg")
-////                        //.setCustomMetadata("myCustomProperty", "myValue")
-////                        .build();
-//
-//                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console",
-//                                                        Toast.LENGTH_SHORT).show();
-//
-//                                            }
-//                                        });
-//    }
 
 
 
@@ -284,21 +230,15 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             mediaPlayer = null;
             mRecordButton.setEnabled(true);
         }
-
-//        try {
-//            uploadAudioToFirebaseStorage();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void audioSetup()
     {
 
-        textView = (TextView) findViewById(R.id.text);
-        mRecordButton = (Button) findViewById(R.id.record_button);
-        mPlayButton = (Button) findViewById(R.id.play_button);
-        mStopButton = (Button) findViewById(R.id.stop_button);
+        textView = findViewById(R.id.text);
+        mRecordButton =  findViewById(R.id.record_button);
+        mPlayButton =  findViewById(R.id.play_button);
+        mStopButton =  findViewById(R.id.stop_button);
         if (!hasMicrophone())
         {
             mStopButton.setEnabled(false);
@@ -389,18 +329,18 @@ public class UserRecordAudioActivity extends AppCompatActivity {
         Date date = new Date();
 
 
-        // COMPLETED (4) Make taskEntry final so it is visible inside the run
+        //  Make taskEntry final so it is visible inside the run
        // method
         final Story taskEntry = new Story(audiotitle,storystate, audiourl,
                 date);
-        // COMPLETED (2) Get the diskIO Executor from the instance of
+        // Get the diskIO Executor from the instance of
        // AppExecutors and
         // call the diskIO execute method with a new Runnable and implement
         //its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                // COMPLETED (9) insert the task only if mTaskId matches
+                // Insert the task only if mTaskId matches
                 //DEFAULT_TASK_ID
                 // Otherwise update it
                 // call finish in any case
@@ -415,12 +355,6 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     private String downloadfile() {
 
-//        try {
-//            uploadAudioToFirebaseStorage();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
         InputStream stream = null;
         try {
             stream = new FileInputStream(new File(audioFilePath));
@@ -428,9 +362,10 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.i("Mains", "File uri: " + stream);
+
+        assert stream != null;
         UploadTask uploadTask = mAudioStorageReference.putStream(stream);
-        Log.i("Mainu", "File uri: " + uploadTask);
+
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -443,59 +378,42 @@ public class UserRecordAudioActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess
                                                     (UploadTask.TaskSnapshot taskSnapshot) {
-                                                // taskSnapshot.getMetadata()
-                                                //contains file metadata such as
-                                                //size, content-type, etc.
-                                                // ...
-                                                // Create file
-                                                //metadata including the content type
-//                StorageMetadata metadata = new StorageMetadata.Builder()
-//                        .setContentType("audio/3pgg")
-//                        //.setCustomMetadata("myCustomProperty", "myValue")
-//                        .build();
+
                                                 Log.i("Mainq", "File uri: " + taskSnapshot.toString());
-                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console" ,
+                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console",
                                                         Toast.LENGTH_SHORT).show();
 
                                             }
 
                                         });
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference storageRef = storage.getReferenceFromUrl
-                ("gs://kstories-900ec.appspot.com").child("k_audio");
 
-
-
-        storageRef.getDownloadUrl().addOnSuccessListener
-
-                (new OnSuccessListener<Uri>() {
-
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.i("Mainstore", "File uri: " + storageRef);
-                        // Got the download URL for 'users/me/profile.png'
-                        //Toast.makeText(UserRecordAudioActivity.this, "sucess" + uri.toString(), Toast.LENGTH_SHORT).show();
-                        Log.i("Main", "File uri: " + uri.toString());
-                        Story upload = new Story();
-                        String varnothing= uri.toString();
-                        upload.setAudioUrl(varnothing);
-                        mDb.storyDao().insertTask(upload);
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+       uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                Toast.makeText(UserRecordAudioActivity.this, "no sucess",
-                        Toast.LENGTH_SHORT).show();
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                return mAudioStorageReference.getDownloadUrl();
             }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    Story upload = new Story();
+                    assert downloadUri != null;
+                    String varnothing = downloadUri.toString();
+                    upload.setAudioUrl(varnothing);
+                    mDb.storyDao().insertTask(upload);
+                    Log.i("Mainq", "File uri: " + downloadUri.toString());
+                }
+            }
+
         });
 
-        //return;
-        return null;
+return null;
     }
-
-
 
 }

@@ -30,4 +30,8 @@
 
     <!--Menu/options_menu-->
     <string name="delete_menu">Delete</string>
+    <string name="play_menu">Play</string>
+
+    <string name="media_url_mp3"><![CDATA[https://firebasestorage.googleapis.com/v0/b/kstories–900ec.appspot.com/o/k_audio%2F17_Nov_2020_17%3A03.3pg?alt=media&token=61564234-2a71-4aca-bf3a-d8e7463b6da5]]></string>
+
 </resources>
