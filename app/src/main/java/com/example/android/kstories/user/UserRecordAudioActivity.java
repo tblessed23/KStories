@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,8 @@ import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
+import com.github.loadingview.LoadingDialog;
+import com.github.loadingview.LoadingView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -93,6 +96,9 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private StorageReference mAudioStorageReference;
     private Uri audioUri;
 
+    private Story stories;
+    private Uri downloadUri;
+    private LoadingView loadingView;
 
     // Member variable for the Database
     private AppDatabase mDb;
@@ -108,6 +114,9 @@ public class UserRecordAudioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_record_audio);
 
         initViews();
+
+        loadingView = findViewById(R.id.loadingView);
+        loadingView.setVisibility(View.GONE);
 
         // Initialize member variable for the data base
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -319,39 +328,9 @@ public class UserRecordAudioActivity extends AppCompatActivity {
      underlying database.
      */
     public void onSaveButtonClicked() {
-        // Create a variable and assign to it the value in the edit text
-        String audiotitle = mEditT.getText().toString();
-        String storystate = mEditState.getText().toString();
-        String audiourl = downloadfile();
-
-
-        //Create a date variable and assign to it the current Date
-        Date date = new Date();
-
-
-        //  Make taskEntry final so it is visible inside the run
-       // method
-        final Story taskEntry = new Story(audiotitle,storystate, audiourl,
-                date);
-        // Get the diskIO Executor from the instance of
-       // AppExecutors and
-        // call the diskIO execute method with a new Runnable and implement
-        //its run method
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                // Insert the task only if mTaskId matches
-                //DEFAULT_TASK_ID
-                // Otherwise update it
-                // call finish in any case
-                if (mTaskId == DEFAULT_TASK_ID) {
-                    // insert new task
-                    mDb.storyDao().insertTask(taskEntry);
-                }
-                finish();
-            }
-        });
-    }
+        downloadfile();
+        loadingView.start();
+}
 
     private String downloadfile() {
 
@@ -401,16 +380,32 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    Story upload = new Story();
+                     downloadUri = task.getResult();
                     assert downloadUri != null;
-                    String varnothing = downloadUri.toString();
-                    upload.setAudioUrl(varnothing);
-                    mDb.storyDao().insertTask(upload);
-                    Log.i("Mainq", "File uri: " + downloadUri.toString());
+                    final String audiourl = downloadUri.toString();
+                    String audiotitle = mEditT.getText().toString();
+                    String storystate = mEditState.getText().toString();
+                    final Story upload = new Story(audiotitle,null, null, storystate, null, null, null, audiourl,
+                            null);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Insert the task only if mTaskId matches
+                            //DEFAULT_TASK_ID
+                            // Otherwise update it
+                            // call finish in any case
+                            if (mTaskId == DEFAULT_TASK_ID) {
+                                // insert new task
+                                upload.setAudioUrl(audiourl);
+                                mDb.storyDao().insertTask(upload);
+
+                            }
+
+                            finish();
+                        }
+                    });
                 }
             }
-
         });
 
 return null;

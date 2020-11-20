@@ -9,32 +9,6 @@
     tools:context=".user.UserRecordAudioActivity">
 
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        >-->
-<!--        <TextView-->
-<!--            android:id="@+id/tv_pass"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            />-->
-<!--        <TextView-->
-<!--            android:id="@+id/tv_duration"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            />-->
-<!--        <TextView-->
-<!--            android:id="@+id/tv_due"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            />-->
-
-
-
-
 
 <!--    </RelativeLayout>-->
 
@@ -99,11 +73,23 @@
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="00:00:00"
+        android:text="@string/_00_00_00"
         android:layout_weight="1"
         android:gravity="center"
         android:textColor="@color/colorAccent"
-        android:textSize="50dp"/>
+        android:textSize="50sp"/>
+
+    <com.github.loadingview.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        app:lv_duration="30"
+        app:lv_end_color="@color/color_end"
+        app:lv_external_radius="24dp"
+        app:lv_internal_radius="4dp"
+        app:lv_start_color="@color/color_start" />
 
     <TextView
         android:id="@+id/title_text_view"
@@ -123,7 +109,7 @@
             android:id="@+id/record_story_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/hint_title"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -138,7 +124,7 @@
             android:id="@+id/record_story_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="State of Story"
+            android:hint="@string/hint_state_of_story"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,4 +138,10 @@
         android:background="@color/colorPrimary"
         android:text="@string/add_button"
         android:textColor="@android:color/primary_text_dark" />
+
+
+
+
+
+
 </LinearLayout>

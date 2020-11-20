@@ -8,4 +8,6 @@
     <color name="activeView">#ffffcc</color>
     <color name="recordAudioButtonTextColor">#996633</color>
 
+    <color name="textColor">#664400</color>
+
 </resources>

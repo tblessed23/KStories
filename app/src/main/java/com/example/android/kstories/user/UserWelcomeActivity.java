@@ -56,7 +56,7 @@ public class UserWelcomeActivity extends AppCompatActivity {
             // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
             @Override
             public void onClick(View view) {
-                Intent editProfileIntent = new Intent(UserWelcomeActivity.this, MusicActivity.class);
+                Intent editProfileIntent = new Intent(UserWelcomeActivity.this, UserPlayAudioActivity.class);
                 startActivity(editProfileIntent);
 
 

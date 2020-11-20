@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
+
 
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
@@ -31,10 +31,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_ID = "extraTaskId";
     // Extra for the task ID to be received after rotation
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
-    // Constants for priority
-    public static final int PRIORITY_HIGH = 1;
-    public static final int PRIORITY_MEDIUM = 2;
-    public static final int PRIORITY_LOW = 3;
+
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
     // Constant for logging
@@ -43,7 +40,6 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     TextInputEditText mEditT, mEditAFN, mEditALN, mEditFN, mEditCity, mEditCounty, mEditState;
 
 
-    RadioGroup mRadioGroup;
     Button mButton;
 
     private int mTaskId = DEFAULT_TASK_ID;
@@ -73,7 +69,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
-                // CRemove the logging and the call to loadTaskById, this is done in the ViewModel now
+                // Remove the logging and the call to loadTaskById, this is done in the ViewModel now
                 // Declare a AddTaskViewModelFactory using mDb and mTaskId
                 UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
                 // Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
@@ -152,13 +148,13 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      */
     public void onSaveButtonClicked() {
 
-        String audiotitle = mEditT.getText().toString();
-        String ancestorfirstname = mEditAFN.getText().toString();
-        String ancestorlastname = mEditALN.getText().toString();
-        String familyname = mEditFN.getText().toString();
-        String storycity = mEditCity.getText().toString();
-        String storycounty = mEditCounty.getText().toString();
-        String storystate = mEditState.getText().toString();
+        String audiotitle = String.valueOf(mEditT);
+        String ancestorfirstname = String.valueOf(mEditAFN);
+        String ancestorlastname = String.valueOf(mEditALN);
+        String familyname = String.valueOf(mEditFN);
+        String storycity = String.valueOf(mEditCity);
+        String storycounty = String.valueOf(mEditCounty);
+        String storystate = String.valueOf(mEditState);
 
 
         //Create a date variable and assign to it the current Date
@@ -166,7 +162,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
 
         // Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname);
+        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, null, null);
         // Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

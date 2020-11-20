@@ -3,6 +3,8 @@ package com.example.android.kstories.model;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.jetbrains.annotations.NotNull;
+
 public class UserEditViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     // COMPLETED Add two member variables. One for the database and one for the taskId
@@ -19,6 +21,7 @@ public class UserEditViewModelFactory extends ViewModelProvider.NewInstanceFacto
     }
 
     // Uncomment the following method
+    @NotNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked

@@ -34,9 +34,11 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     implementation 'com.android.support:multidex:1.0.3'
+
 
 
     //Cardview
@@ -59,6 +61,10 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //ProgressIndicator
+    implementation 'com.samigehi:loadingview:1.1'
+
 
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'

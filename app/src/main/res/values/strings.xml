@@ -34,4 +34,21 @@
 
     <string name="media_url_mp3"><![CDATA[https://firebasestorage.googleapis.com/v0/b/kstories–900ec.appspot.com/o/k_audio%2F17_Nov_2020_17%3A03.3pg?alt=media&token=61564234-2a71-4aca-bf3a-d8e7463b6da5]]></string>
 
+
+    <!--User Saved Audio List XML-->
+    <string name="labelcounty"></string>
+    <string name="title_of_story">Title of Story:</string>
+    <string name="city_where_story_takes_place">City where story takes place:</string>
+    <string name="county_where_story_takes_place">County where story takes place:</string>
+    <string name="state_where_story_takes_place">State where story takes place:</string>
+    <string name="ancestor_firstname">Ancestor Firstname:</string>
+    <string name="ancestor_lastname">Ancestor Lastname:</string>
+    <string name="family_name">Family Name:</string>
+    <string name="editsavedaudio">Edit</string>
+    <string name="hint_state_of_story">State of Story</string>
+    <string name="hint_title">Title</string>
+    <string name="_00_00_00">00:00:00</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="intent_key_steps_position">Steps Position</string>
 </resources>

@@ -29,7 +29,7 @@ public class Story  {
     private String storycity;
     private String storycounty;
     private String storystate;
-    private String ancestorfirstname;
+    private String ancestorfirstname = null;
     private String ancestorlastname;
     private String familyname;
     @ColumnInfo(name = "updated_at")
@@ -47,7 +47,7 @@ public class Story  {
 
     //Regular Constructor
     @Ignore
-    public Story(String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, Date updatedAt) {
+    public Story(String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
         this.audiotitle = audiotitle;
         this.storycity = storycity;
         this.storycounty = storycounty;
@@ -55,12 +55,13 @@ public class Story  {
         this.ancestorfirstname = ancestorfirstname;
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
+        this.audioUrl = audioUrl;
         this.updatedAt = updatedAt;
     }
 
     //Id Constructor
 
-    public Story(int userId, String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, Date updatedAt) {
+    public Story(int userId, String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
         this.userId = userId;
         this.audiotitle = audiotitle;
         this.storycity = storycity;
@@ -69,28 +70,22 @@ public class Story  {
         this.ancestorfirstname = ancestorfirstname;
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
+        this.audioUrl = audioUrl;
         this.updatedAt = updatedAt;
     }
 
-    public Story(String audiotitleq, String storycityq, String storycountyq, String storystateq, String ancestorfirstnameq, String ancestorlastnameq, String familynameq) {
-        this.audiotitle = audiotitleq;
-        this.storycity = storycityq;
-        this.storycounty = storycountyq;
-        this.storystate = storystateq;
-        this.ancestorfirstname = ancestorfirstnameq;
-        this.ancestorlastname = ancestorlastnameq;
-        this.familyname = familynameq;
+//    public Story(String audiotitleq, String storycityq, String storycountyq, String storystateq, String ancestorfirstnameq, String ancestorlastnameq, String familynameq, String audioUrlq, Date updatedAtq) {
+//        this.audiotitle = audiotitleq;
+//        this.storycity = storycityq;
+//        this.storycounty = storycountyq;
+//        this.storystate = storystateq;
+//        this.ancestorfirstname = ancestorfirstnameq;
+//        this.ancestorlastname = ancestorlastnameq;
+//        this.familyname = familynameq;
+//        this.audioUrl = audioUrlq;
+//        this.updatedAt = updatedAtq;
+//    }
 
-    }
-
-
-    public Story(String audiotitlew, String audioUrlw, String storystatew, Date updatedAtw){
-
-        this.audiotitle = audiotitlew;
-        this.audioUrl = audioUrlw;
-        this.storystate = storystatew;
-        this.updatedAt = updatedAtw;
-    }
 
     public Story() {
 

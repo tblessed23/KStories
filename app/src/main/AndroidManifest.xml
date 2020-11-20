@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MusicActivity"  android:screenOrientation="portrait"></activity>
+        <activity android:name=".user.UserPlayAudioActivity"></activity>
+        <activity
+            android:name=".MusicActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".user.UserEditAudioDetailsActivity" />
         <activity android:name=".user.UserSavedAudioActivity" />
         <activity android:name=".user.UserAudioDetailActivity" />
@@ -28,8 +31,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
-
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

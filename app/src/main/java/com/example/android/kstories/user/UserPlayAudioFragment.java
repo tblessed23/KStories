@@ -1,49 +1,80 @@
-package com.example.android.kstories;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.android.kstories.user;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.android.kstories.R;
+import com.example.android.kstories.model.Story;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
 import dm.audiostreamer.AudioStreamingManager;
-import dm.audiostreamer.CurrentSessionCallback;
-import dm.audiostreamer.MediaMetaData;
-import dm.audiostreamer.StreamingManager;
 
-public class MusicActivity extends AppCompatActivity {
 
-private AudioStreamingManager streamingManager;
-private PlayerView playerView;
-private SimpleExoPlayer player;
-private boolean playWhenReady = true;
-private int currentWindow = 0;
-private long playbackPosition = 0;
+public class UserPlayAudioFragment extends Fragment {
 
+    private AudioStreamingManager streamingManager;
+    private PlayerView mPlayerView;
+    private SimpleExoPlayer player;
+    private boolean playWhenReady = true;
+    private int currentWindow = 0;
+    private long playbackPosition = 0;
+    public static final String EXTRA_TASK_ID = "extraTaskId";
+    private Story stories;
+    private Uri videoLink;
+    private int position;
 
     private Context context;
+
+
+    public UserPlayAudioFragment() {
+        // Required empty public constructor
+    }
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music);
+        if (getArguments() != null) {
 
-         playerView = findViewById(R.id.video_view);
+            stories = getArguments().getParcelable(EXTRA_TASK_ID);
+            position = getArguments().getInt(getResources().getString(R.string.intent_key_steps_position));
+        }
 
-//        this.context = MusicActivity.this;
-//        streamingManager = AudioStreamingManager.getInstance(context);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_user_play_audio, container, false);
+
+        mPlayerView = rootView.findViewById(R.id.video_view);
+
+        videoLink =  Uri.parse(stories.getAudioUrl());
+        Log.i("Playvideo", "File uri: " + videoLink);
+
+        return rootView;
     }
 
     private void initializePlayer() {
-        player = new SimpleExoPlayer.Builder(this).build();
-        playerView.setPlayer(player);
-        MediaItem mediaItem = MediaItem.fromUri(getString(R.string.media_url_mp3));
+        player = new SimpleExoPlayer.Builder(getActivity()).build();
+        mPlayerView.setPlayer(player);
+        MediaItem mediaItem = MediaItem.fromUri(videoLink);
         player.setMediaItem(mediaItem);
         player.setPlayWhenReady(playWhenReady);
         player.seekTo(currentWindow, playbackPosition);
@@ -70,7 +101,7 @@ private long playbackPosition = 0;
     }
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
-        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -103,36 +134,5 @@ private long playbackPosition = 0;
         }
     }
 
-    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

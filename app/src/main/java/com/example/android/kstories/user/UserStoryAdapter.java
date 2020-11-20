@@ -1,5 +1,6 @@
 package com.example.android.kstories.user;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +41,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
     private static final String DATE_FORMAT = "MM/dd/yyy";
 
     // Member variable to handle item clicks
-    final private ItemClickListener mItemClickListener;
+   // final private ItemClickListener mItemClickListener;
     // Class variables for the List that holds task data and the Context
     private List<Story> mStoryEntries;
     private Context mContext;
@@ -61,9 +62,9 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
      * @param context  the current Context
      *
      */
-    public UserStoryAdapter(Context context, ItemClickListener listener) {
+    public UserStoryAdapter(Context context) {
         mContext = context;
-        mItemClickListener = listener;
+        //mItemClickListener = listener;
     }
 
     /**
@@ -100,6 +101,8 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String audiourl = stories.getAudioUrl();
        // final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
+
+        //Handle Editing databse entry
         holder.editStoryDetails.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -111,12 +114,13 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             }
         });
 
-        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+        //Handle Deleting Database entry
+        holder.fullMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //creating a popup menu
-                PopupMenu popup = new PopupMenu(mContext, holder.buttonViewOption);
+                PopupMenu popup = new PopupMenu(mContext, holder.fullMenu);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.options_menu);
                 //adding click listener
@@ -124,30 +128,40 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        // Delete the word
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                //handle menu1 click
 
-                        if (item.getItemId() == R.id.menu1) {//handle menu1 click
+                                int elementPlayId = mStoryEntries.get(position).getUserId();
+                                Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
+                                intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementPlayId);
+                                mContext.startActivity(intent);
 
-                            //Run deletion off the main thread
-                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // insert the task only if mTaskId matches DEFAULT_TASK_ID
-                                    // Otherwise update it
-                                    // call finish in any case
-                                    if (mTaskId == DEFAULT_TASK_ID) {
-                                        // delete task
-                                        mDb.storyDao().deleteTask(stories);
-                                       mStoryEntries.remove(stories);
+                                break;
+                            case R.id.menu2:
+                                //handle menu2 click
+                                //Run deletion off the main thread
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // insert the task only if mTaskId matches DEFAULT_TASK_ID
+                                        // Otherwise update it
+                                        // call finish in any case
+                                        if (mTaskId == DEFAULT_TASK_ID) {
+                                            // delete task
+                                            mDb.storyDao().deleteTask(stories);
+                                            mStoryEntries.remove(stories);
 
-                                       //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+                                            //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
 //                                       UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext).get(UserEditViewModel.class);
 //                                        userModel.deleteTask(stories);
 //                                        .clear();
 
+                                        }
                                     }
-                                }
-                            });
+                                });
+
+                                break;
                         }
                         return false;
                     }
@@ -157,6 +171,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
 
             }
         });
+
         //Set values
         holder.titleView.setText(title);
         holder.storyStateView.setText(storystate);
@@ -200,12 +215,8 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         notifyDataSetChanged();
     }
 
-    public interface ItemClickListener {
-        void onItemClickListener(int itemId);
-    }
-
     // Inner class for creating ViewHolders
-    class StoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class StoryViewHolder extends RecyclerView.ViewHolder {
 
         // Class variables for the task description and priority TextViews
         TextView titleView;
@@ -216,7 +227,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView storyCountyView;
         TextView storyStateView;
        // TextView updatedAtView;
-        TextView buttonViewOption;
+        TextView fullMenu;
         TextView audioURLView;
         Button editStoryDetails;
 
@@ -237,15 +248,10 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             storyCountyView=itemView.findViewById(R.id.county_of_story);
             storyStateView=itemView.findViewById(R.id.state_of_story);
             editStoryDetails=itemView.findViewById(R.id.edit_saved_audio);
-            buttonViewOption = (TextView) itemView.findViewById(R.id.textViewOptions);
-           audioURLView=itemView.findViewById(R.id.audioUrl);
-            itemView.setOnClickListener(this);
-        }
+            fullMenu = itemView.findViewById(R.id.menuTextMenuView);
 
-        @Override
-        public void onClick(View view) {
-            int elementId = mStoryEntries.get(getAdapterPosition()).getUserId();
-            mItemClickListener.onItemClickListener(elementId);
+           audioURLView=itemView.findViewById(R.id.audioUrl);
+
         }
     }
 }

@@ -19,16 +19,35 @@
         >
 
         <TextView
+            android:id="@+id/label_audio_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:text="@string/title_of_story" />
+
+        <TextView
             android:id="@+id/audio_title"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_gap"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="4dp"
+            android:layout_below="@id/label_audio_title"
             android:ellipsize="end"
             android:maxLines="4" />
+
+        <View style="@style/Divider"/>
+
+        <TextView
+            android:id="@+id/label_city_of_story"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/audio_title"
+            android:textColor="@color/textColor"
+            android:text="@string/city_where_story_takes_place" />
 
         <TextView
             android:id="@+id/city_of_story"
@@ -38,23 +57,20 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:layout_below="@id/audio_title"
+            android:layout_below="@id/label_city_of_story"
             android:textColor="#6000"
             android:maxLines="2"
             android:ellipsize="end" />
 
+        <View style="@style/Divider"/>
+
         <TextView
             android:id="@+id/label_county_of_story"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            android:textColor="#6000"
             android:layout_below="@id/city_of_story"
-            android:maxLines="2"
-            android:ellipsize="end" />
+            android:textColor="@color/textColor"
+            android:text="@string/county_where_story_takes_place" />
 
         <TextView
             android:id="@+id/county_of_story"
@@ -65,9 +81,18 @@
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
             android:textColor="#6000"
-            android:layout_below="@id/city_of_story"
+            android:layout_below="@id/label_county_of_story"
             android:maxLines="2"
             android:ellipsize="end" />
+
+
+        <TextView
+            android:id="@+id/label_state_of_story"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/county_of_story"
+            android:textColor="@color/textColor"
+            android:text="@string/state_where_story_takes_place" />
 
         <TextView
             android:id="@+id/state_of_story"
@@ -77,10 +102,20 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:layout_below="@id/county_of_story"
+            android:layout_below="@id/label_state_of_story"
             android:textColor="#6000"
             android:maxLines="2"
             android:ellipsize="end" />
+
+
+
+        <TextView
+            android:id="@+id/label_ancestor_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/state_of_story"
+            android:textColor="@color/textColor"
+            android:text="@string/ancestor_firstname" />
 
         <TextView
             android:id="@+id/ancestor_first_name"
@@ -90,10 +125,20 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:layout_below="@id/state_of_story"
+            android:layout_below="@id/label_ancestor_first"
             android:textColor="#6000"
             android:maxLines="2"
             android:ellipsize="end" />
+
+        <View style="@style/Divider"/>
+
+        <TextView
+            android:id="@+id/label_ancestor_last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_below="@id/ancestor_first_name"
+            android:text="@string/ancestor_lastname" />
 
         <TextView
         android:id="@+id/ancestor_last_name"
@@ -103,10 +148,20 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="16dp"
-            android:layout_below="@id/ancestor_first_name"
+            android:layout_below="@id/label_ancestor_last"
         android:textColor="#6000"
         android:maxLines="2"
         android:ellipsize="end" />
+
+        <View style="@style/Divider"/>
+
+        <TextView
+            android:id="@+id/label_family_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:layout_below="@id/ancestor_last_name"
+            android:text="@string/family_name" />
 
         <TextView
             android:id="@+id/family_name"
@@ -116,7 +171,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="16dp"
-            android:layout_below="@id/ancestor_last_name"
+            android:layout_below="@id/label_family_name"
             android:textColor="#6000"
             android:maxLines="2"
             android:ellipsize="end" />
@@ -146,10 +201,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/audioUrl"
-            android:text="Edit"/>
+            android:text="@string/editsavedaudio"/>
 
+
+
+
+        <!--View for Menu Items-->
         <TextView
-            android:id="@+id/textViewOptions"
+            android:id="@+id/menuTextMenuView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -157,6 +216,10 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:text="&#8942;"
             android:textAppearance="?android:textAppearanceLarge" />
+
+
+
+
 
     </RelativeLayout>
 
