@@ -8,6 +8,15 @@
     android:orientation="vertical"
     tools:context=".user.UserSavedAudioActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="All Recorded Stories"
+        app:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <!-- RecyclerView that is responsible for holding a listtaskEntrytask data -->
     <androidx.recyclerview.widget.RecyclerView

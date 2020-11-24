@@ -8,7 +8,15 @@
     android:background="@color/recordAudioBlue"
     tools:context=".user.UserRecordAudioActivity">
 
-
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Record Your Story"
+        app:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 <!--    </RelativeLayout>-->
 

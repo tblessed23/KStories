@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +27,14 @@ import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
+import com.example.android.kstories.model.Favorites;
 import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
 import com.example.android.kstories.model.UserEditViewModelFactory;
 import com.firebase.ui.auth.data.model.User;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -99,22 +102,41 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storycounty = stories.getStorycounty();
         final String storystate = stories.getStorystate();
         final String audiourl = stories.getAudioUrl();
+        final int userid = stories.getUserId();
        // final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
 
-        //Handle Editing databse entry
+        //Handle Editing Database Entry
         holder.editStoryDetails.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 int elementId = mStoryEntries.get(position).getUserId();
-        Intent intent = new Intent(mContext, UserEditAudioDetailsActivity.class);
-        intent.putExtra(UserEditAudioDetailsActivity.EXTRA_TASK_ID, elementId);
-        mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, UserEditAudioDetailsActivity.class);
+                intent.putExtra(UserEditAudioDetailsActivity.EXTRA_TASK_ID, elementId);
+                mContext.startActivity(intent);
             }
         });
 
-        //Handle Deleting Database entry
+
+
+        //Handle Favorites
+        holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                final Favorites favorites = new Favorites(userid, title);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.favoritesDao().insertFavorites(favorites);
+                        ((Activity)mContext).finish();
+                    }
+                });
+            }
+        });
+
+        //Handle Options Menu: Delete, Play
         holder.fullMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,10 +154,19 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                             case R.id.menu1:
                                 //handle menu1 click
 
-                                int elementPlayId = mStoryEntries.get(position).getUserId();
+                                int elementId = mStoryEntries.get(position).getUserId();
                                 Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
-                                intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementPlayId);
+                                intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementId);
                                 mContext.startActivity(intent);
+
+//                                Intent intent =  new Intent(mContext, UserPlayAudioActivity.class);
+//                                intent.putExtra(mContext.getResources().getString(R.string.intent_key_stories), stories);
+//                                mContext.startActivity(intent);
+
+//                                String elementPlayId = mStoryEntries.get(position).getAudioUrl();
+//                                Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
+//                                intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementPlayId);
+//                                mContext.startActivity(intent);
 
                                 break;
                             case R.id.menu2:
@@ -230,6 +261,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView fullMenu;
         TextView audioURLView;
         Button editStoryDetails;
+        Button favoriteButton;
 
         /**
          * Constructor for the TaskViewHolders.
@@ -249,9 +281,10 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             storyStateView=itemView.findViewById(R.id.state_of_story);
             editStoryDetails=itemView.findViewById(R.id.edit_saved_audio);
             fullMenu = itemView.findViewById(R.id.menuTextMenuView);
-
-           audioURLView=itemView.findViewById(R.id.audioUrl);
+            favoriteButton = itemView.findViewById(R.id.favoriteButton);
+            audioURLView=itemView.findViewById(R.id.audioUrl);
 
         }
+
     }
 }

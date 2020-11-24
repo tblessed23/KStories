@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginTop="4dp"
@@ -201,9 +202,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/audioUrl"
+            android:minWidth="64dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@color/orange_a700"
+            android:textColor="@color/white"
             android:text="@string/editsavedaudio"/>
 
-
+        <!-- Add button -->
+        <Button
+            android:id="@+id/favoriteButton"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:paddingRight="10dp"
+            android:text="@string/favorite_button"
+            android:layout_below="@id/edit_saved_audio"
+            android:textSize="15sp"
+            android:drawableLeft="@drawable/baseline_star_rate_black_18dp"
+            android:textColor="@android:color/primary_text_dark" />
 
 
         <!--View for Menu Items-->

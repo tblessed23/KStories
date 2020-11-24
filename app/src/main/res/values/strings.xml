@@ -51,4 +51,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="intent_key_steps_position">Steps Position</string>
+    <string name="favorite_button">Mark as Favorite</string>
+
+
+    <!--Favorites Fragment -->
+    <string name="error_log">Updating list of tasks from LiveData in ViewModel</string>
+
+    <!--favorites_layout.xml-->
+    <string name="swipe_delete">swipe delete</string>
+    <string name="intent_key_stories">Stories</string>
+
+    <!--UserPlayAudioActivity  -->
+    <string name="detail_error_message">No story data available.</string>
 </resources>

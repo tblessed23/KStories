@@ -111,6 +111,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
 
 
+
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +141,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         mEditCounty.setText(stories.getStorycounty());
         mEditState.setText(stories.getStorystate());
 
+
     }
 
     /**
@@ -148,13 +150,14 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      */
     public void onSaveButtonClicked() {
 
-        String audiotitle = String.valueOf(mEditT);
-        String ancestorfirstname = String.valueOf(mEditAFN);
-        String ancestorlastname = String.valueOf(mEditALN);
-        String familyname = String.valueOf(mEditFN);
-        String storycity = String.valueOf(mEditCity);
-        String storycounty = String.valueOf(mEditCounty);
-        String storystate = String.valueOf(mEditState);
+            String audiotitle = mEditT.getText().toString();
+
+        String ancestorfirstname = mEditAFN.getText().toString();
+        String ancestorlastname = mEditALN.getText().toString();
+        String familyname = mEditFN.getText().toString();
+        String storycity = mEditCity.getText().toString();
+        String storycounty = mEditCounty.getText().toString();
+        String storystate =mEditState.getText().toString();
 
 
         //Create a date variable and assign to it the current Date

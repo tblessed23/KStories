@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.UserPlayAudioActivity"></activity>
+        <activity android:name=".user.FavoritesActivity"></activity>
+        <activity android:name=".user.UserPlayAudioActivity" />
         <activity
             android:name=".MusicActivity"
             android:screenOrientation="portrait" />
