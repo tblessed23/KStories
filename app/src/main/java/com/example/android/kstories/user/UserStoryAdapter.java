@@ -154,7 +154,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                             case R.id.menu1:
                                 //handle menu1 click
 
-                                int elementId = mStoryEntries.get(position).getUserId();
+                               int elementId = mStoryEntries.get(position).getUserId();
                                 Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
                                 intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementId);
                                 mContext.startActivity(intent);
