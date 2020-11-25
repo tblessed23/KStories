@@ -16,6 +16,9 @@ public interface StoryDao {
     @Query("SELECT * FROM story ORDER BY updated_at")
     LiveData<List<Story>> loadAllStories();
 
+//    @Query("SELECT audiotitle FROM story")
+//    LiveData<List<Story>> loadTitle();
+
     @Insert
     void insertTask(Story storyEntry);
 
@@ -25,7 +28,7 @@ public interface StoryDao {
     @Delete
     void deleteTask(Story story);
 
-    // COMPLETED (1) Create a Query method named loadTaskById that receives an int id and returns a TaskEntry Object
+    // Create a Query method named loadTaskById that receives an int id and returns a TaskEntry Object
     // The query for this method should get all the data for that id in the task table
     @Query("SELECT * FROM story WHERE userId = :id")
    LiveData<Story> loadStoryById(int id);

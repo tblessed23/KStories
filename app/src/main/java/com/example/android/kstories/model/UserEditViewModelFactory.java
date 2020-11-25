@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class UserEditViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    // COMPLETED Add two member variables. One for the database and one for the taskId
     private final AppDatabase mDb;
     private final int mTaskId;
 

@@ -19,7 +19,7 @@ public class UserEditViewModel extends ViewModel {
     //Add a task member variable for the TaskEntry object wrapped in a LiveData
 
 
-    // COMPLETED (8) Create a constructor where you call loadTaskById of the taskDao to initialize the tasks variable
+    // Create a constructor where you call loadTaskById of the taskDao to initialize the tasks variable
     // Note: The constructor should receive the database and the taskId
     public UserEditViewModel(AppDatabase database, int taskId) {
         task = database.storyDao().loadStoryById(taskId);
@@ -27,15 +27,12 @@ public class UserEditViewModel extends ViewModel {
 
 
 
-    // COMPLETED (7) Create a getter for the task variable
+    // Create a getter for the task variable
     public LiveData<Story> getTask() {
         return task;
     }
 
    ;
 
-//    public void deleteTask(Story story) {
-//        deleteTask(story);
-//    }
 
 }

@@ -9,10 +9,70 @@
     tools:context=".user.UserPlayAudioActivity">
 
     <TextView
-        android:id="@+id/video_link"
-        android:layout_width="wrap_content"
+        android:id="@+id/story_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+    <TextView
+        android:id="@+id/ancestor_first_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+
+
+    <TextView
+        android:id="@+id/ancestor_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+
+    <TextView
+        android:id="@+id/family_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+    <TextView
+        android:id="@+id/story_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+
+
+
+    <TextView
+        android:id="@+id/story_county"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+
+
+    <TextView
+        android:id="@+id/story_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
+
+    <!--    <TextView-->
+<!--        android:id="@+id/video_link"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        />-->
 
 <!--    <com.google.android.exoplayer2.ui.PlayerView-->
 <!--        android:id="@+id/video_view"-->
