@@ -35,7 +35,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     // Constant for logging
     private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
-    TextView mEditT;
+    TextView mEditT, mEditAfN;
 
     //Exo-player Variables
 
@@ -46,6 +46,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     private long playbackPosition = 0;
     private Uri videoLink;
     String textvurl;
+    private Story storiesa;
 
     private int mTaskId = DEFAULT_TASK_ID;
 
@@ -69,7 +70,8 @@ public class UserPlayAudioActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
-          //  mButton.setText(R.string.update_button);
+
+            //  mButton.setText(R.string.update_button);
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
@@ -87,10 +89,16 @@ public class UserPlayAudioActivity extends AppCompatActivity {
                     public void onChanged(@Nullable Story taskEntry) {
                         viewModel.getTask().removeObserver(this);
                         populateUI(taskEntry);
+
                     }
+
                 });
+
+
             }
         }
+
+
 
     }
 
@@ -107,9 +115,10 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     private void initViews() {
 
         mEditT = findViewById(R.id.story_title);
+        //mEditAfN = findViewById(R.id.ancestor_first_name);
 
         // Initialize the player view.
-        mPlayerView =  findViewById(R.id.playerView);
+        mPlayerView = findViewById(R.id.playerView);
 
     }
 
@@ -126,30 +135,27 @@ public class UserPlayAudioActivity extends AppCompatActivity {
 
 
         mEditT.setText(stories.getAudiotitle());
+        //mEditAfN.setText(stories.getAudioUrl());
 
 
         videoLink=  Uri.parse(stories.getAudioUrl());
-       // textvurl = stories.getAudioUrl();
+        initializePlayer();
+        //textvurl = stories.getAudioUrl();
 
     }
 
 
-        private void initializePlayer ()  {
-        player = new SimpleExoPlayer.Builder(this).build();
-        mPlayerView.setPlayer(player);
-        MediaItem mediaItem = MediaItem.fromUri(videoLink);
-        player.setMediaItem(mediaItem);
-        player.setPlayWhenReady(playWhenReady);
-        player.seekTo(currentWindow, playbackPosition);
-        player.prepare();
+    private void initializePlayer() {
+        if (player == null) {
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (Util.SDK_INT >= 24) {
-            initializePlayer();
+            player = new SimpleExoPlayer.Builder(this).build();
+            mPlayerView.setPlayer(player);
+           ;
+            MediaItem mediaItem = MediaItem.fromUri(videoLink);
+            player.setMediaItem(mediaItem);
+            player.setPlayWhenReady(playWhenReady);
+            player.seekTo(currentWindow, playbackPosition);
+            player.prepare();
         }
     }
 
@@ -157,10 +163,8 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         hideSystemUi();
-        if ((Util.SDK_INT < 24 || player == null)) {
-            initializePlayer();
-        }
     }
+
     @SuppressLint("InlinedApi")
     private void hideSystemUi() {
         mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -170,10 +174,11 @@ public class UserPlayAudioActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT < 24) {
+        if (Util.SDK_INT < 16) {
             releasePlayer();
         }
     }
@@ -181,7 +186,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT >= 24) {
+        if (Util.SDK_INT >= 16) {
             releasePlayer();
         }
     }
