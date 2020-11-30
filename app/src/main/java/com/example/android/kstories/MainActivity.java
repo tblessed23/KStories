@@ -30,6 +30,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        //Set-Up the Browse All Button
+        Button browseAll = findViewById(R.id.browse_all_button);
+
+        //Connect to BrowseAllActivity
+        browseAll.setOnClickListener(new View.OnClickListener() {
+            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
+            @Override
+            public void onClick(View view) {
+                Intent intentBrowseAll = new Intent(MainActivity.this, BrowseAllActivity.class);
+                startActivity(intentBrowseAll);
+
+
+            }
+        });
+
 
         // Find the View that shows the Lauryn Hill songs category
         Button lauryn = (Button) findViewById(R.id.useraccount_button);

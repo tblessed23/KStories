@@ -9,6 +9,8 @@ import com.firebase.ui.auth.data.model.User;
 
 import java.util.List;
 
+
+//This deals with the StoryDao
 public class UserEditViewModel extends ViewModel {
 
   //  private UserEditRepository mRepository;

@@ -9,11 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.FavoritesActivity"></activity>
+        <activity android:name=".NowPlaying"></activity>
+        <activity android:name=".BrowseAllActivity" />
+        <activity android:name=".user.FavoritesActivity" />
         <activity android:name=".user.UserPlayAudioActivity" />
-        <activity
-            android:name=".MusicActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".user.UserEditAudioDetailsActivity" />
         <activity android:name=".user.UserSavedAudioActivity" />
         <activity android:name=".user.UserAudioDetailActivity" />
@@ -32,6 +31,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <receiver android:name="dm.audiostreamer.AudioStreamingReceiver">
+            <intent-filter>
+                <action android:name="dm.audiostreamer.close" />
+                <action android:name="dm.audiostreamer.pause" />
+                <action android:name="dm.audiostreamer.next" />
+                <action android:name="dm.audiostreamer.play" />
+                <action android:name="dm.audiostreamer.previous" />
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="dm.audiostreamer.AudioStreamingService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

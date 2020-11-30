@@ -1,32 +1,31 @@
-package com.example.android.kstories.user;
-
-// Extra for the task ID to be received in the intent
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+package com.example.android.kstories;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.android.kstories.R;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
 import com.example.android.kstories.model.UserEditViewModelFactory;
+import com.example.android.kstories.user.UserEditAudioDetailsActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
-public class UserPlayAudioActivity extends AppCompatActivity {
+
+/***This activity ties into the BrowseAllActivity/BrowseAllAdapter/BrowseAllFragment**/
+
+public class NowPlaying extends AppCompatActivity {
 
     public static final String EXTRA_TASK_ID = "extraTaskId";
     // Extra for the task ID to be received after rotation
@@ -52,12 +51,10 @@ public class UserPlayAudioActivity extends AppCompatActivity {
 
     private int mTaskId = DEFAULT_TASK_ID;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_play_audio);
-
+        setContentView(R.layout.activity_now_playing);
 
         initViews();
 
@@ -100,10 +97,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
             }
         }
 
-
-
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

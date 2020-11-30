@@ -13,16 +13,6 @@ import java.util.Date;
 @Entity
 public class Story  {
 
-//    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-//        public Story createFromParcel(Parcel in) {
-//            return new Story(in);
-//        }
-//
-//        public Story[] newArray(int size) {
-//            return new Story[0];
-//        }
-//    };
-
     @PrimaryKey(autoGenerate = true)
     private int userId;
     private String audiotitle;
@@ -37,13 +27,13 @@ public class Story  {
     private Date updatedAt;
 
 
-//    /**
-//     * No args constructor for use in serialization
-//     *
-//     * @param story
-//     */
-//    public Story(String story) {
-//    }
+    /**
+     * No args constructor for use in serialization
+     *
+     * @param story
+     */
+    public Story(String story) {
+    }
 
     //Regular Constructor
     @Ignore
@@ -74,17 +64,7 @@ public class Story  {
         this.updatedAt = updatedAt;
     }
 
-//    public Story(String audiotitleq, String storycityq, String storycountyq, String storystateq, String ancestorfirstnameq, String ancestorlastnameq, String familynameq, String audioUrlq, Date updatedAtq) {
-//        this.audiotitle = audiotitleq;
-//        this.storycity = storycityq;
-//        this.storycounty = storycountyq;
-//        this.storystate = storystateq;
-//        this.ancestorfirstname = ancestorfirstnameq;
-//        this.ancestorlastname = ancestorlastnameq;
-//        this.familyname = familynameq;
-//        this.audioUrl = audioUrlq;
-//        this.updatedAt = updatedAtq;
-//    }
+
 
 
     public Story() {
@@ -174,35 +154,16 @@ public class Story  {
 
 
 
-    //Parceling constructor
-//    public Story(Parcel in) {
-//        this.userId = in.readInt();
-//        this.audiotitle = in.readString();
-//        this.storycity = in.readString();
-//        this.storycounty = in.readString();
-//        this.storystate= in.readString();
-//        this.ancestorfirstname= in.readString();
-//        this.ancestorlastname= in.readString();
-//        this.familyname= in.readString();
-//        this.updatedAt= new Date (in.readLong());
-//    }
-
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeInt(this.userId);
-//        dest.writeString(this.audiotitle);
-//        dest.writeString(this.storycity);
-//        dest.writeString(this.storycounty);
-//        dest.writeString(this.storystate);
-//        dest.writeString(this.ancestorfirstname);
-//        dest.writeString(this.ancestorlastname);
-//        dest.writeString(this.familyname);
-//        dest.writeLong(updatedAt.getTime());
-//
-//    }
+   // Parceling constructor
+    public Story(Parcel in) {
+        this.userId = in.readInt();
+        this.audiotitle = in.readString();
+        this.storycity = in.readString();
+        this.storycounty = in.readString();
+        this.storystate= in.readString();
+        this.ancestorfirstname= in.readString();
+        this.ancestorlastname= in.readString();
+        this.familyname= in.readString();
+        this.updatedAt= new Date (in.readLong());
+    }
 }

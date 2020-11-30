@@ -1,8 +1,11 @@
 package com.example.android.kstories.user;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -18,6 +21,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -139,7 +145,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         //Handle Options Menu: Delete, Play
         holder.fullMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(mContext, holder.fullMenu);
@@ -172,25 +178,28 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                             case R.id.menu2:
                                 //handle menu2 click
                                 //Run deletion off the main thread
-                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // insert the task only if mTaskId matches DEFAULT_TASK_ID
-                                        // Otherwise update it
-                                        // call finish in any case
-                                        if (mTaskId == DEFAULT_TASK_ID) {
-                                            // delete task
-                                            mDb.storyDao().deleteTask(stories);
-                                            mStoryEntries.remove(stories);
 
-                                            //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
-//                                       UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext).get(UserEditViewModel.class);
-//                                        userModel.deleteTask(stories);
-//                                        .clear();
+                                    open(position);
 
-                                        }
-                                    }
-                                });
+//                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        // insert the task only if mTaskId matches DEFAULT_TASK_ID
+//                                        // Otherwise update it
+//                                        // call finish in any case
+//                                        if (mTaskId == DEFAULT_TASK_ID) {
+//                                            // delete task
+//                                            mDb.storyDao().deleteTask(stories);
+//                                            mStoryEntries.remove(stories);
+//
+//                                            //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+////                                       UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext).get(UserEditViewModel.class);
+////                                        userModel.deleteTask(stories);
+////                                        .clear();
+//
+//                                        }
+//                                    }
+//                                });
 
                                 break;
                         }
@@ -286,5 +295,45 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
 
         }
 
+    }
+
+    public void open(int position){
+        final Story stories = mStoryEntries.get(position);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+        alertDialogBuilder.setMessage(R.string.dialog_delete)
+                .setPositiveButton(R.string.delete_action, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                // insert the task only if mTaskId matches DEFAULT_TASK_ID
+                                // Otherwise update it
+                                // call finish in any case
+                                if (mTaskId == DEFAULT_TASK_ID) {
+                                    // delete task
+                                    mDb.storyDao().deleteTask(stories);
+                                    mStoryEntries.remove(stories);
+
+                                    //UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+//                                       UserEditViewModel userModel =new ViewModelProvider((ViewModelStoreOwner) mContext).get(UserEditViewModel.class);
+//                                        userModel.deleteTask(stories);
+//                                        .clear();
+
+                                }
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+
+                    }
+                });
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

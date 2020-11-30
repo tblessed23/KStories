@@ -12,7 +12,7 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Story.class, Favorites.class}, version = 2, exportSchema = false)
+@Database(entities = {Story.class, Favorites.class, Profileu.class}, version = 3, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -69,5 +69,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract StoryDao storyDao();
     public abstract FavoritesDao favoritesDao();
-
+    public abstract ProfileuDao profileuDao();
 }
