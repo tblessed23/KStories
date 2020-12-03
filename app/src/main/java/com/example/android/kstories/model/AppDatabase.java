@@ -12,7 +12,7 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Story.class, Favorites.class, Profileu.class}, version = 3, exportSchema = false)
+@Database(entities = {Story.class, Favorites.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -40,12 +40,22 @@ public abstract class AppDatabase extends RoomDatabase {
 
             //database.execSQL("ALTER TABLE 'favorites' ADD COLUMN 'id' INTEGER");
             //database.execSQL("INSERT INTO `favorites` ADD COLUMN `id` INTEGER, " + "`name` TEXT, PRIMARY KEY(`id`))");
-            database.execSQL("INSERT INTO 'favorites' (id, titleFavorites) " + "SELECT id, titleFavorites FROM Favorites");;
+            database.execSQL("INSERT INTO 'favorites' (id, titleFavorites) " + "SELECT id, titleFavorites FROM Favorites");
+            //database.execSQL("CREATE TABLE `Favorites` (`id` INTEGER, "+ "`titleFavorites` TEXT, PRIMARY KEY(`id`))");
 
 
 
         }
     };
+//    @VisibleForTesting
+//    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+//        @Override
+//        public void migrate(@NonNull SupportSQLiteDatabase database) {
+//            //database.execSQL("INSERT INTO 'profileu' (userId, firstname, lastname, city, state, country, phone, email, displayname, updatedAt) " + "SELECT userId, firstname, lastname, city, state, country, phone, email, displayname, updatedAt FROM Profileu");
+//            database.execSQL("INSERT INTO 'favorites' (id, titleFavorites) " + "SELECT id, titleFavorites FROM Favorites");
+//        }
+//    };
+
 
     public static AppDatabase getInstance(Context context) {
         if (sInstance == null) {
@@ -69,5 +79,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract StoryDao storyDao();
     public abstract FavoritesDao favoritesDao();
-    public abstract ProfileuDao profileuDao();
+    //public abstract ProfileuDao profileuDao();
 }

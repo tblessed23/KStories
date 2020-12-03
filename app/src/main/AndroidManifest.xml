@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NowPlaying"></activity>
+        <activity android:name=".search.SearchActivity" />
+
+        <activity
+            android:name=".user.UserWelcomeActivity"
+            android:label="@string/title_activity_user_welcome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".user.UserProfileActivity" />
+        <activity android:name=".NowPlaying" />
         <activity android:name=".BrowseAllActivity" />
         <activity android:name=".user.FavoritesActivity" />
         <activity android:name=".user.UserPlayAudioActivity" />
@@ -24,13 +31,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".user.UserWelcomeActivity"
-            android:parentActivityName=".MainActivity">
+        <receiver android:name=".widget.FavoritesWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorites_widget_provider_info" />
+        </receiver>
 
         <receiver android:name="dm.audiostreamer.AudioStreamingReceiver">
             <intent-filter>

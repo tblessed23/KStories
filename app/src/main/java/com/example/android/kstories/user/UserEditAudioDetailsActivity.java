@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.example.android.kstories.R;
@@ -22,6 +23,8 @@ import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
 import com.example.android.kstories.model.UserEditViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -38,6 +41,8 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
     TextInputEditText mEditT, mEditAFN, mEditALN, mEditFN, mEditCity, mEditCounty, mEditState;
+    TextView mEditUrl;
+    private Story stories;
 
 
     Button mButton;
@@ -108,6 +113,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         mEditCity=findViewById(R.id.story_city);
         mEditCounty=findViewById(R.id.story_county);
         mEditState=findViewById(R.id.story_state);
+        mEditUrl=findViewById(R.id.url_text_view);
 
 
 
@@ -140,6 +146,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         mEditCity.setText(stories.getStorycity());
         mEditCounty.setText(stories.getStorycounty());
         mEditState.setText(stories.getStorystate());
+        mEditUrl.setText(stories.getAudioUrl());
 
 
     }
@@ -158,6 +165,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         String storycity = mEditCity.getText().toString();
         String storycounty = mEditCounty.getText().toString();
         String storystate =mEditState.getText().toString();
+        String audiourl = mEditUrl.getText().toString();
 
 
         //Create a date variable and assign to it the current Date
@@ -165,7 +173,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
 
         // Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, null, null);
+        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, null);
         // Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

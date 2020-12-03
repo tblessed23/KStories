@@ -1,103 +1,76 @@
 package com.example.android.kstories.user;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Menu;
+import android.widget.Toast;
+
+import com.example.android.kstories.R;
+import com.example.android.kstories.user.ui.gallery.GalleryFragment;
+import com.example.android.kstories.user.ui.home.HomeFragment;
+import com.example.android.kstories.user.ui.slideshow.SlideshowFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-
-import com.example.android.kstories.R;
-
 public class UserWelcomeActivity extends AppCompatActivity {
+
+    private AppBarConfiguration mAppBarConfiguration;
+    private  DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_welcome);
-
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-
-
-        // Find the Button that will go to the Record Audio page
-        Button recordAudio = (Button) findViewById(R.id.record_audio_button);
-
-        // Set a click listener on that View
-        recordAudio.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent recordAudioIntent = new Intent(UserWelcomeActivity.this, UserRecordAudioActivity.class);
-                startActivity(recordAudioIntent);
-
-
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
-
-        // Find the Button that will go to the Record Audio page
-        Button savedAudio = (Button) findViewById(R.id.saved_audio_button);
-
-        // Set a click listener on that View
-        savedAudio.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
-            @Override
-            public void onClick(View view) {
-                Intent recordAudioIntent = new Intent(UserWelcomeActivity.this, UserSavedAudioActivity.class);
-                startActivity(recordAudioIntent);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
 
-            }
-        });
-
-        // Find the Button that will go to the Record Audio page
-        Button edituserProfile = (Button) findViewById(R.id.edit_user_details_button);
-
-        // Set a click listener on that View
-        edituserProfile.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
-            @Override
-            public void onClick(View view) {
-                Intent editProfileIntent = new Intent(UserWelcomeActivity.this, UserPlayAudioActivity.class);
-                startActivity(editProfileIntent);
+//        // Passing each menu ID as a set of Ids because each
+//        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_profile, R.id.nav_recordings)
+                .setDrawerLayout(drawer)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
 
 
-            }
-        });
 
-        // Find the Button that will go to the Record Audio page
-        Button edituserAudio = (Button) findViewById(R.id.audio_edit_user_details_button);
-
-        // Set a click listener on that View
-        edituserAudio.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
-            @Override
-            public void onClick(View view) {
-                Intent editAudioIntent = new Intent(UserWelcomeActivity.this, UserEditAudioDetailsActivity.class);
-                startActivity(editAudioIntent);
-
-
-            }
-        });
     }
 
-    /**
-     * Methods for setting up the menu
-     **/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
-        MenuInflater inflater = getMenuInflater();
-        /* Use the inflater's inflate method to inflate our visualizer_menu layout to this menu */
-        inflater.inflate(R.menu.nav_items, menu);
-        /* Return true so that the visualizer_menu is displayed in the Toolbar */
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav_items, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -107,7 +80,14 @@ public class UserWelcomeActivity extends AppCompatActivity {
             startActivity(startSettingsActivity);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
 }

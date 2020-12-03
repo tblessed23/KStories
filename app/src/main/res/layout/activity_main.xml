@@ -33,12 +33,6 @@
 
 
     <Button
-        android:id="@+id/browse_all_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/browseall" />
-
-    <Button
         android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

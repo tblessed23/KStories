@@ -32,6 +32,8 @@
     <string name="add_button">Save</string>
     <string name="edit_task_description">Describe your taskEntry...</string>
     <string name="update_button">Update</string>
+    <string name="edit_url">URL</string>
+
 
     <!--Menu/options_menu-->
     <string name="delete_menu">Delete</string>
@@ -59,58 +61,43 @@
     <!--Favorites Fragment -->
     <string name="error_log">Updating list of tasks from LiveData in ViewModel</string>
 
+    <string name="favorite">Favorite</string>
     <!--favorites_layout.xml-->
     <string name="swipe_delete">swipe delete</string>
     <string name="intent_key_stories">Stories</string>
 
+    <!--Navigation Drawer-->
+    <string name="menu_home">Home</string>
+    <string name="home_title_page">Kisa: User Account Home</string>
+    <string name="menu_gallery">Profile</string>
+    <string name="menu_slideshow">My Recordings</string>
+    <string name="title_activity_user_welcome">UserWelcomeActivity</string>
+    <string name="menu_browse_title">Browse All</string>
+    <string name="menu_search_title">Search</string>
+
+    <string name="add_widget">Add widget</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_nav_practice">NavPracticeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <!--Search-->
+    <string name="search_button">Search</string>
+
     <!--UserPlayAudioActivity  -->
     <string name="detail_error_message">No story data available.</string>
 
-    <string name="favorite">Favorite</string>
-    <string name="error_no_metadata">Unable to retrieve metadata.</string>
-    <string name="browse_genres">Genres</string>
-    <string name="browse_genre_subtitle">Songs by genre</string>
-    <string name="browse_musics_by_genre_subtitle">%1$s songs</string>
-    <string name="random_queue_title">Random music</string>
-    <string name="error_no_connection">Cannot connect to server. Please, check your Internet connectivity.</string>
-    <string name="error_loading_media">Error Loading Media</string>
-    <string name="casting_to_device">Casting to %1$s</string>
-    <string name="currently_playing_song">Song currently playing</string>
-    <string name="currently_playing_artist">Artist of currently playing song</string>
-    <string name="currently_playing_extra_info">Extra info for currently playing song</string>
-    <string name="play_item">Play item</string>
-    <string name="play_pause">play or pause</string>
-    <string name="skip_next">skip to next</string>
-    <string name="skip_prev">skip to previous</string>
-    <string name="touch_to_cast">Touch to connect to a Google Cast device</string>
-    <!-- Use the default receiver. To customize a styled media receiver, you can use
-         the css and images under <project-root>/docs/cast_styled_receiver -->
-    <string name="cast_application_id">CC1AD845</string>
-    <string name="home_title">Home</string>
-    <string name="related_content_header">You may also like</string>
-    <string name="action_listen">Listen</string>
-    <string name="open_content_drawer">Open the main menu</string>
-    <string name="close_content_drawer">Close the main menu</string>
-    <string name="placeholder_message">This is a placeholder for your application code.</string>
-    <string name="drawer_allmusic_title">All Music</string>
-    <string name="drawer_playlists_title">Playlists</string>
-    <string name="now_playing">Now Playing</string>
-    <string name="background_image_str">Background image for album art</string>
-    <string name="search_queue_title">Search results</string>
-    <string name="no_search_results">No search results.</string>
-    <string name="loading">Loading…</string>
-    <string name="media_route_menu_title">Play on…</string>
-    <string name="nav_header_username">Username</string>
+    <!--Widget-->
+    <string name="widget_instructions">Kisa: Favorite Stories Quick Access</string>
+    <string name="appwidget_text">Kisa: Favorite Stories Quick Access</string>
 
-    <!-- Notificaiton Channel -->
-    <string name="notification_channel">UAMP_Channel_ID</string>
-    <string name="notification_channel_description">Channel ID for UAMP</string>
 
-    <string name="stop_casting">Stop Casting</string>
-    <string name="label_pause">Pause</string>
-    <string name="label_play">Play</string>
-    <string name="label_previous">Previous</string>
-    <string name="label_next">Next</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+
+
 </resources>
