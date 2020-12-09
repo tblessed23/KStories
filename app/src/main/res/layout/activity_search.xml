@@ -1,101 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="false">
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.kstories.search.SearchViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
+        android:layout_height="match_parent"
+        tools:context=".search.SearchActivity"
+        android:orientation="vertical"
+        >
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField3"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:id="@+id/toolbar_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:background="?colorPrimary"-->
+<!--            android:elevation="4dp">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_ancestor_last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint=" Last Name"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/my_toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                android:background="?attr/colorPrimary"-->
+<!--                app:title="Search"-->
+<!--                app:titleTextColor="@color/white"-->
+<!--                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_family_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Business Name"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_story_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="City of Story"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_story_county"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="County of Story"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_story_state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="State of Story"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-        <!-- Add button -->
-        <Button
-            android:id="@+id/saveButton"
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/colorPrimary"
-            android:text="@string/search_button"
-            android:textColor="@android:color/primary_text_dark" />
-
-
-    </LinearLayout>
-</ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout></layout>

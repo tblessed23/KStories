@@ -15,5 +15,9 @@
     <!-- Background color for app -->
     <color name="tan_background">#FFF7DA</color>
 
+   <!--About Us-->
+    <color name="brown">#795548</color>
+
+
 
 </resources>

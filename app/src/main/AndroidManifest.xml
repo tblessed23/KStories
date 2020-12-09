@@ -9,12 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".search.SearchActivity" />
+        <activity android:name=".user.ui.aboutus.AboutUsActivity"></activity>
+        <activity android:name=".search.SearchDetailActivity" />
+        <activity android:name=".search.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".user.UserWelcomeActivity"
             android:label="@string/title_activity_user_welcome"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchActivity" />
+        </activity>
         <activity android:name=".user.UserProfileActivity" />
         <activity android:name=".NowPlaying" />
         <activity android:name=".BrowseAllActivity" />
@@ -31,6 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name=".widget.FavoritesWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -40,23 +54,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorites_widget_provider_info" />
         </receiver>
-
-        <receiver android:name="dm.audiostreamer.AudioStreamingReceiver">
-            <intent-filter>
-                <action android:name="dm.audiostreamer.close" />
-                <action android:name="dm.audiostreamer.pause" />
-                <action android:name="dm.audiostreamer.next" />
-                <action android:name="dm.audiostreamer.play" />
-                <action android:name="dm.audiostreamer.previous" />
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name="dm.audiostreamer.AudioStreamingService"
-            android:enabled="true"
-            android:exported="true" />
     </application>
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

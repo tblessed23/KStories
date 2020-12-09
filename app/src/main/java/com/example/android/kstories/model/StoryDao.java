@@ -1,6 +1,7 @@
 package com.example.android.kstories.model;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,6 +17,15 @@ public interface StoryDao {
     @Query("SELECT * FROM story ORDER BY updated_at")
     LiveData<List<Story>> loadAllStories();
 
+    @Query("SELECT * FROM story")
+    Story loadStoryObject();
+
+    @Query("SELECT * FROM story where storystate LIKE  :query " + "OR storycity LIKE :query order by storystate")
+    DataSource.Factory<Integer, Story> loadAllStoriesFromSearch(String query);
+
+    @Query("SELECT * FROM story order by storystate")
+    DataSource.Factory<Integer, Story> loadAllStoryView();
+
     @Insert
     void insertTask(Story storyEntry);
 
@@ -29,5 +39,13 @@ public interface StoryDao {
     // The query for this method should get all the data for that id in the task table
     @Query("SELECT * FROM story WHERE userId = :id")
    LiveData<Story> loadStoryById(int id);
+
+
+//    @Query("SELECT * FROM Story WHERE audiotitle LIKE :storyText")
+//    LiveData<List<Story>> getDealsList(String storyText);
+
+    @Query("SELECT * from story WHERE storystate like  :desc")
+    LiveData<List<Story>> getSearchResults(String desc);
+
 
 }

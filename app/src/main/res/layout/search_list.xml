@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="120dp"
     android:background="@color/tan_background"
     android:minHeight="@dimen/list_item_height"
-    android:orientation="vertical">
-
-
-
-
+    android:transitionName="foodie"
+    >
 
     <LinearLayout
         android:id="@+id/text_container"
@@ -23,11 +18,10 @@
         android:paddingLeft="16dp">
 
         <TextView
-            android:id="@+id/storytitle_text_view"
+            android:id="@+id/searchstorystatetext_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="bottom"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#4E342E"
             android:textStyle="bold"
@@ -35,29 +29,15 @@
             />
 
         <TextView
-            android:id="@+id/ancestorfirstname_text_view"
+            android:id="@+id/searchstorycitytext_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#4E342E"
-            android:textSize="12sp"
-            />
+            android:textStyle="bold"
+            android:textSize="12dp"/>
+
 
     </LinearLayout>
-
-
-    <ImageButton
-        android:id="@+id/browse_all_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@color/fui_transparent"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/baseline_arrow_right_alt_black_18dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp" />
-
-
 </RelativeLayout>

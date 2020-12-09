@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.android.kstories.R;
+import com.example.android.kstories.search.SearchActivity;
 import com.example.android.kstories.user.ui.gallery.GalleryFragment;
 import com.example.android.kstories.user.ui.home.HomeFragment;
 import com.example.android.kstories.user.ui.slideshow.SlideshowFragment;
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -33,12 +37,17 @@ public class UserWelcomeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private  DrawerLayout drawer;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_welcome);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
+
         final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +63,7 @@ public class UserWelcomeActivity extends AppCompatActivity {
 //        // Passing each menu ID as a set of Ids because each
 //        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_recordings)
+                R.id.nav_home, R.id.nav_about, R.id.nav_browse,  R.id.nav_profile, R.id.nav_recordings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -69,6 +78,7 @@ public class UserWelcomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_items, menu);
+
         return true;
     }
 
@@ -76,13 +86,21 @@ public class UserWelcomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent startSettingsActivity = new Intent(this, FavoritesActivity.class);
-            startActivity(startSettingsActivity);
+            Intent startFavoritesActivity = new Intent(this, FavoritesActivity.class);
+            startActivity(startFavoritesActivity);
+            return true;
+        }
+
+        if (id == R.id.action_search) {
+            Intent startSearchActivity = new Intent(this, SearchActivity.class);
+            startActivity(startSearchActivity);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {

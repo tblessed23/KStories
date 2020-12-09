@@ -7,6 +7,17 @@
     <string name="welcometext">Welcome to Kisa!</string>
     <string name="welcomedescriptiontext">Griot. Tell your ancestors stories. Tell your family stories.</string>
 
+    <!--About Us-->
+    <string name="aboutbody">Our quest to find where our roots began started in the heart of The Great Continent.
+        This is were our inspiration comes. Kisa is a Swahili word for story.
+        And we believe that our stories are the most precious, most powerful possession that we hold.</string>
+    <string name="aboutbodytwo">
+When we first embarked upon the journey of learning more about our family history.
+        One of the most intriguing findings we came upon was how information from family
+        historians was lost when they passed away. Uncles, aunts, cousins and grandparents all have riches hidden in their memories.
+        It is our belief that when we let allow these gems to be recorded and shared, that it will connect and link all of our stories together.
+        It is our hope that you will use the Kisa App to improve your genealogical experience and enhance your families historical journey from generation to generation.</string>
+
     <!--DeleteStoryDialogFragment-->
     <string name="dialog_delete">Are you sure you want to delete?</string>
     <string name="delete_action">Delete</string>
@@ -93,11 +104,9 @@
     <!--Widget-->
     <string name="widget_instructions">Kisa: Favorite Stories Quick Access</string>
     <string name="appwidget_text">Kisa: Favorite Stories Quick Access</string>
-
-
-
-
-
+    <string name="app_label">Kisa Search</string>
+    <string name="search_hint">Search by State, City</string>
+    <string name="menu_aboutus_title">About Us</string>
 
 
 </resources>
