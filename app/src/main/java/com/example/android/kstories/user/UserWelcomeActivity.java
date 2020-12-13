@@ -10,7 +10,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.android.kstories.R;
-import com.example.android.kstories.search.SearchActivity;
+
 import com.example.android.kstories.user.ui.gallery.GalleryFragment;
 import com.example.android.kstories.user.ui.home.HomeFragment;
 import com.example.android.kstories.user.ui.slideshow.SlideshowFragment;
@@ -48,14 +48,7 @@ public class UserWelcomeActivity extends AppCompatActivity {
 
 
 
-        final FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -91,11 +84,6 @@ public class UserWelcomeActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_search) {
-            Intent startSearchActivity = new Intent(this, SearchActivity.class);
-            startActivity(startSearchActivity);
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

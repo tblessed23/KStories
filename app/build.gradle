@@ -79,8 +79,7 @@ dependencies {
     //Material Design
     implementation 'com.google.android.material:material:1.2.1'
 
-    //Pagination
-    implementation 'android.arch.paging:runtime:2.1.0'
+
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -103,8 +102,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
         exclude module: 'appcompat-v7'}
 
-    //RxJava
-    implementation "io.reactivex.rxjava3:rxjava:3.0.4"
+
 
     //Room dependencies
     def room_version = "2.2.5"

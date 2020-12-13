@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Parcelable;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -46,6 +51,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.StoryViewHolder> {
+    private View mEmptyView;
+
     // Constant for date format
     private static final String DATE_FORMAT = "MM/dd/yyy";
 
@@ -109,7 +116,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storystate = stories.getStorystate();
         final String audiourl = stories.getAudioUrl();
         final int userid = stories.getUserId();
-       // final String updatedAt = dateFormat.format(stories.getUpdatedAt());
+       final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
 
         //Handle Editing Database Entry
@@ -120,27 +127,15 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                 int elementId = mStoryEntries.get(position).getUserId();
                 Intent intent = new Intent(mContext, UserEditAudioDetailsActivity.class);
                 intent.putExtra(UserEditAudioDetailsActivity.EXTRA_TASK_ID, elementId);
+               // intent.putExtra("title", title);
+                String elementTitle =  mStoryEntries.get(position).getAudiotitle();
+                intent.putExtra("Stories",  elementTitle);
                 mContext.startActivity(intent);
             }
         });
 
 
 
-        //Handle Favorites
-        holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                final Favorites favorites = new Favorites(userid, title);
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDb.favoritesDao().insertFavorites(favorites);
-                        ((Activity)mContext).finish();
-                    }
-                });
-            }
-        });
 
         //Handle Options Menu: Delete, Play
         holder.fullMenu.setOnClickListener(new View.OnClickListener() {
@@ -220,8 +215,10 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         holder.familynameView.setText(familyname);
         holder.ancestorFNView.setText(ancestorfn);
         holder.ancestorLNView.setText(ancestorln);
-       // holder.updatedAtView.setText(updatedAt);
+        holder.updatedAtView.setText(updatedAt);
         holder.audioURLView.setText(audiourl);
+        holder.audioURLView.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -266,11 +263,12 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         TextView storyCityView;
         TextView storyCountyView;
         TextView storyStateView;
-       // TextView updatedAtView;
+        TextView updatedAtView;
         TextView fullMenu;
         TextView audioURLView;
         Button editStoryDetails;
-        Button favoriteButton;
+
+
 
         /**
          * Constructor for the TaskViewHolders.
@@ -281,7 +279,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             super(itemView);
 
             titleView = itemView.findViewById(R.id.audio_title);
-            //updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
+            updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
             ancestorFNView= itemView.findViewById(R.id.ancestor_first_name);
             ancestorLNView= itemView.findViewById(R.id.ancestor_last_name);
             familynameView=itemView.findViewById(R.id.family_name);
@@ -290,7 +288,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             storyStateView=itemView.findViewById(R.id.state_of_story);
             editStoryDetails=itemView.findViewById(R.id.edit_saved_audio);
             fullMenu = itemView.findViewById(R.id.menuTextMenuView);
-            favoriteButton = itemView.findViewById(R.id.favoriteButton);
+
             audioURLView=itemView.findViewById(R.id.audioUrl);
 
         }
@@ -336,4 +334,47 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+
+//    /**Handle Empty State of Recyclerview**/
+//    private RecyclerView.AdapterDataObserver mDataObserver = new RecyclerView.AdapterDataObserver() {
+//        @Override
+//        public void onChanged() {
+//            super.onChanged();
+//            updateEmptyView();
+//        }
+//    };
+//
+//
+//    /**
+//     * Designate a view as the empty view. When the backing adapter has no
+//     * data this view will be made visible and the recycler view hidden.
+//     *
+//     */
+//    public void setEmptyView(View emptyView) {
+//        mEmptyView = emptyView;
+//    }
+//
+//    @Override
+//    public void setAdapter(RecyclerView.adapter adapter) {
+//        if (getDe != null) {
+//            getAdapter().unregisterAdapterDataObserver(mDataObserver);
+//        }
+//        if (adapter != null) {
+//            adapter.registerAdapterDataObserver(mDataObserver);
+//        }
+//        super.setAdapter(adapter);
+//        updateEmptyView();
+//    }
+//
+//
+//    private void updateEmptyView() {
+//        if (mEmptyView != null && getAdapter() != null) {
+//            boolean showEmptyView = getAdapter().getItemCount() == 0;
+//            mEmptyView.setVisibility(showEmptyView ? VISIBLE : GONE);
+//            setVisibility(showEmptyView ? GONE : VISIBLE);
+//        }
+//    }
+
+
 }

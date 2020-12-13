@@ -18,11 +18,13 @@ public class Story  {
 
     @PrimaryKey(autoGenerate = true)
     private int userId;
+
     private String audiotitle;
     private String storycity;
     private String storycounty;
+
     private String storystate;
-    private String ancestorfirstname = null;
+    private String ancestorfirstname;
     private String ancestorlastname;
     private String familyname;
     @ColumnInfo(name = "updated_at")
@@ -40,7 +42,7 @@ public class Story  {
 
     //Regular Constructor
     @Ignore
-    public Story(String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
+    public Story(String audiotitle, String storycity, String storycounty,  String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
         this.audiotitle = audiotitle;
         this.storycity = storycity;
         this.storycounty = storycounty;
@@ -117,7 +119,7 @@ public class Story  {
         return storystate;
     }
 
-    public void setStorystate(String storystate) {
+    public void setStorystate( String storystate) {
         this.storystate = storystate;
     }
 

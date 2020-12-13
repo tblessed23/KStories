@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -14,21 +12,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Story;
-import com.github.loadingview.LoadingDialog;
 import com.github.loadingview.LoadingView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +35,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -51,9 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import kotlin.jvm.internal.Intrinsics;
-
-public class UserRecordAudioActivity extends AppCompatActivity {
+public class UserRecordAudioActivity extends AppCompatActivity implements MediaRecorder.OnInfoListener, MediaPlayer.OnCompletionListener{
 
     private static MediaRecorder mediaRecorder;
     private static MediaPlayer mediaPlayer;
@@ -65,6 +59,7 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private Button mEditButton;
     private Button mPauseButton;
     private Button mResumeButton;
+    private Button mSaveButton;
 
     private SeekBar mSeekBar;
     private int mInterval = 10;
@@ -74,11 +69,16 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     private TextView mPass;
     private TextView mDuration;
     private TextView mDue;
+    private TextView mStateWarning;
+    private TextView mTitleWarning;
+    String getStateText;
+    String getTitleText;
     View view;
 
     TextView textView;
     CountDownTimer countDownTimer;
     int second = -1, minute, hour;
+    int intDuration = 0;
 
     private String practicekisa = customFilepath();
 
@@ -103,7 +103,7 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     // Member variable for the Database
     private AppDatabase mDb;
     Button mButton;
-    TextInputEditText mEditT, mEditState;
+   TextInputEditText mEditT, mEditState;
     private int mTaskId = DEFAULT_TASK_ID;
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
@@ -112,6 +112,10 @@ public class UserRecordAudioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_record_audio);
+
+        mSaveButton = findViewById(R.id.saveRecordButton);
+
+
 
         initViews();
 
@@ -138,8 +142,29 @@ public class UserRecordAudioActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions,
                 REQUEST_RECORD_AUDIO_PERMISSION);
 
+        mEditState.addTextChangedListener(loginTextWatcher);
+        mEditT.addTextChangedListener(loginTextWatcher);
+
+
 
     }
+
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String stateInput = mEditState.getText().toString().trim();
+            String titleInput = mEditT.getText().toString().trim();
+            mSaveButton.setEnabled(!stateInput.isEmpty() && !titleInput.isEmpty());
+
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void initViews() {
         mEditT=findViewById(R.id.record_story_title);
@@ -152,6 +177,14 @@ public class UserRecordAudioActivity extends AppCompatActivity {
                 onSaveButtonClicked();
             }
         });
+    }
+
+    private void showDuration() {
+        if (mediaPlayer != null) { //make sure media player was created
+            long totalDuration = mediaPlayer.getDuration();
+            Toast.makeText(this, "Your duration: " + RecordingWorks.milliSecondsToTimer(totalDuration), Toast.LENGTH_LONG).show();
+            intDuration = mediaPlayer.getDuration();
+        }
     }
 
     //Create file path for file uploaded into Firebase Storage
@@ -167,7 +200,10 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
     public void playButton(View view) throws IOException {
 
-
+        second = -1;
+        minute = 0;
+        hour = 0;
+        textView.setText("00:00:00");
 
         mPlayButton.setEnabled(false);
         mRecordButton.setEnabled(false);
@@ -176,21 +212,18 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(audioFilePath);
+        mediaPlayer.setOnCompletionListener(this::onCompletion);
         mediaPlayer.prepare();
         mediaPlayer.start();
+        showDuration();
+        showTimer();
     }
 
-    public void editButton(View view) throws IOException {
 
-        Intent recordAudioIntent = new Intent(UserRecordAudioActivity.this,
-                UserAudioDetailActivity.class);
-        startActivity(recordAudioIntent);
-    }
 
 
 
     public void recordButton(View view) {
-
         isRecording = true;
         mStopButton.setEnabled(true);
         mPlayButton.setEnabled(false);
@@ -203,12 +236,16 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             mediaRecorder.setOutputFormat(
                     MediaRecorder.OutputFormat.THREE_GPP);
             mediaRecorder.setOutputFile(audioFilePath);
+            mediaRecorder.setMaxDuration(1800000);
+            mediaRecorder.setOnInfoListener(this::onInfo);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mediaRecorder.prepare();
         } catch (Exception e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
         mediaRecorder.start();
+        //onInfo(mediaRecorder, position);
+
         showTimer();
 
     }
@@ -217,13 +254,14 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 
 
     public void stopButton(View view) {
+
         countDownTimer.cancel();
         mStopButton.setEnabled(false);
         mPlayButton.setEnabled(true);
-        second = -1;
-        minute = 0;
-        hour = 0;
-        textView.setText("00:00:00");
+//        second = -1;
+//        minute = 0;
+//        hour = 0;
+//        textView.setText("00:00:00");
 
         if (isRecording)
         {
@@ -233,13 +271,18 @@ public class UserRecordAudioActivity extends AppCompatActivity {
             mediaRecorder.release();
             mediaRecorder = null;
             isRecording = false;
-        } else {
 
+
+        } else {
+            showDuration();
             mediaPlayer.release();
             mediaPlayer = null;
             mRecordButton.setEnabled(true);
         }
+
+
     }
+
 
     private void audioSetup()
     {
@@ -322,6 +365,7 @@ public class UserRecordAudioActivity extends AppCompatActivity {
         return String.format("%02d:%02d:%02d", hour, minute, second);
     }
 
+
     /**
      * onSaveButtonClicked is called when the "save" button is clicked.
      * It retrieves user input and inserts that new task data into the
@@ -329,10 +373,13 @@ public class UserRecordAudioActivity extends AppCompatActivity {
      */
     public void onSaveButtonClicked() {
         downloadfile();
-        loadingView.start();
+            loadingView.start();
+
+
 }
 
     private String downloadfile() {
+
 
         InputStream stream = null;
         try {
@@ -385,8 +432,9 @@ public class UserRecordAudioActivity extends AppCompatActivity {
                     final String audiourl = downloadUri.toString();
                     String audiotitle = mEditT.getText().toString();
                     String storystate = mEditState.getText().toString();
+                    Date date = new Date();
                     final Story upload = new Story(audiotitle,null, null, storystate, null, null, null, audiourl,
-                            null);
+                            date);
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
@@ -411,4 +459,18 @@ public class UserRecordAudioActivity extends AppCompatActivity {
 return null;
     }
 
+    public void onInfo(MediaRecorder mr, int what, int extra) {
+        if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+            Toast.makeText(this, "Maximum Recording Session Reached", Toast.LENGTH_LONG).show();
+            stopButton(view);
+        }
+
+
+    }
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        stopButton(view);
+    }
 }

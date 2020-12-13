@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +19,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-import com.example.android.kstories.search.SearchActivity;
+
 import com.example.android.kstories.user.UserWelcomeActivity;
 
 
@@ -31,20 +30,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        // Find the View that shows the Lauryn Hill songs category
-        Button lauryna = (Button) findViewById(R.id.search_button);
-
-        // Set a click listener on that View
-        lauryna.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
-            @Override
-            public void onClick(View view) {
-                Intent laurynIntent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(laurynIntent);
-
-
-            }
-        });
 
 
         // Find the View that shows the Lauryn Hill songs category

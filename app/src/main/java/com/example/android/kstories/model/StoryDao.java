@@ -1,13 +1,14 @@
 package com.example.android.kstories.model;
 
 import androidx.lifecycle.LiveData;
-import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.google.android.exoplayer2.upstream.DataSource;
 
 import java.util.List;
 
@@ -19,12 +20,6 @@ public interface StoryDao {
 
     @Query("SELECT * FROM story")
     Story loadStoryObject();
-
-    @Query("SELECT * FROM story where storystate LIKE  :query " + "OR storycity LIKE :query order by storystate")
-    DataSource.Factory<Integer, Story> loadAllStoriesFromSearch(String query);
-
-    @Query("SELECT * FROM story order by storystate")
-    DataSource.Factory<Integer, Story> loadAllStoryView();
 
     @Insert
     void insertTask(Story storyEntry);

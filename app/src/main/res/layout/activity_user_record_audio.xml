@@ -19,7 +19,10 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 <!--    </RelativeLayout>-->
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <Button
         android:id="@+id/record_button"
         android:layout_width="wrap_content"
@@ -39,15 +42,7 @@
         android:onClick="playButton"
         />
 
-    <Button
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/activeView"
-        android:text="@string/edit"
-        android:layout_marginBottom="8dp"
-        android:onClick="editButton"
-        />
+
 
 <!--    <Button-->
 <!--        android:id="@+id/pause_button"-->
@@ -77,6 +72,8 @@
         android:layout_marginBottom="8dp"
         android:onClick="stopButton" />
 
+</LinearLayout>
+
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -84,8 +81,38 @@
         android:text="@string/_00_00_00"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/material_on_surface_emphasis_medium"
         android:textSize="50sp"/>
+
+    <TextView
+        android:id="@+id/durationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        android:textSize="18sp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/text_warning_state"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="Please provide a Your State"-->
+<!--        android:layout_weight="1"-->
+<!--        android:gravity="center"-->
+<!--        android:textColor="@color/material_on_surface_emphasis_medium"-->
+<!--        android:textSize="12sp"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/text_warning_title"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="Please provide a Your Title"-->
+<!--        android:layout_weight="1"-->
+<!--        android:gravity="center"-->
+<!--        android:textColor="@color/colorAccent"-->
+<!--        android:textSize="12sp"/>-->
+
 
     <com.github.loadingview.LoadingView
         android:id="@+id/loadingView"
@@ -108,6 +135,8 @@
         android:textColor="#4689C8"
         android:textStyle="bold" />
 
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filledTextField"
         android:layout_width="match_parent"
@@ -118,6 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_title"
+            android:inputType="text"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -126,6 +156,7 @@
         android:id="@+id/filledTextField6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -133,8 +164,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_state_of_story"
+            android:inputType="text"
             />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <!-- Add button -->
     <Button
@@ -144,6 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
+        android:enabled="false"
         android:text="@string/add_button"
         android:textColor="@android:color/primary_text_dark" />
 

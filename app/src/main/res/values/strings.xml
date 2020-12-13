@@ -38,6 +38,8 @@ When we first embarked upon the journey of learning more about our family histor
     <string name="resume">Resume</string>
     <string name="edit">Edit Files</string>
     <string name="record_message">Add Additional information about your story in the Saved Audio section of your account.</string>
+    <string name="durationMessage">Your recording is:</string>
+
 
     <!--UserEditAudioDetailsActivity-->
     <string name="add_button">Save</string>
@@ -107,6 +109,10 @@ When we first embarked upon the journey of learning more about our family histor
     <string name="app_label">Kisa Search</string>
     <string name="search_hint">Search by State, City</string>
     <string name="menu_aboutus_title">About Us</string>
+    <string name="favoritebutton">Favorite Saved</string>
+    <string name="mark_as_favorite">Mark As Favorite</string>
+    <string name="empty_state">You have not added a recording.</string>
+    <string name="saved_recording_message">*Your Recording has been saved.</string>
 
 
 </resources>

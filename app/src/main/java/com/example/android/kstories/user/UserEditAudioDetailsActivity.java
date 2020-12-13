@@ -2,11 +2,13 @@ package com.example.android.kstories.user;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,18 +17,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
+import com.example.android.kstories.model.Favorites;
 import com.example.android.kstories.model.Story;
 
 import com.example.android.kstories.model.UserEditViewModel;
 import com.example.android.kstories.model.UserEditViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
@@ -41,11 +48,20 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
     TextInputEditText mEditT, mEditAFN, mEditALN, mEditFN, mEditCity, mEditCounty, mEditState;
-    TextView mEditUrl;
+    TextView mEditUrl, mDateTime;
     private Story stories;
-
+String audiotitle;
+    String titleFavorities;
+    int storyId;
+    String titleFavs;
+    String titlea;
+    // Constant for date format
+    private static final String DATE_FORMAT = "MM/dd/yyy";
+    // Date formatter
+    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
     Button mButton;
+    Button mFavoriteButton;
 
     private int mTaskId = DEFAULT_TASK_ID;
 
@@ -58,7 +74,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_story);
 
-
+        mFavoriteButton = findViewById(R.id.favoriteButton);
         initViews();
 
         // Initialize member variable for the data base
@@ -69,11 +85,30 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
+//        if (getIntent().hasExtra(Extr)){
+//            titleFavorities = stories.getAudiotitle();
+//        }
+            //titleFavorities.
+        //titleFavorities.setText(getIntent().getStringExtra("title"));
+
+        // Using getParcelableExtra(String key) method
+        if (intent.hasExtra("Stories")) {
+            stories= intent.getParcelableExtra("Stories");
+
+
+
+            titlea = stories.getAudiotitle();
+
+        }
+
         if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
             mButton.setText(R.string.update_button);
+
             if (mTaskId == DEFAULT_TASK_ID) {
+
                 // populate the UI
                 mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+
                 // Remove the logging and the call to loadTaskById, this is done in the ViewModel now
                 // Declare a AddTaskViewModelFactory using mDb and mTaskId
                 UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
@@ -88,10 +123,14 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
                     public void onChanged(@Nullable Story taskEntry) {
                         viewModel.getTask().removeObserver(this);
                         populateUI(taskEntry);
+                        queryFavorites();
                     }
                 });
             }
+
         }
+
+
 
     }
 
@@ -100,6 +139,58 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(INSTANCE_TASK_ID, mTaskId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
+public void queryFavorites(){
+    LiveData<Favorites> currentId = mDb.favoritesDao().loadTaskById(mTaskId);
+    currentId.observe(this, new Observer<Favorites>() {
+        @Override
+        public void onChanged(Favorites favorites) {
+            if (favorites !=null && favorites.getId()==mTaskId){
+                Drawable image = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_favorite_24, null);
+                mFavoriteButton.setEnabled(false);
+                mFavoriteButton.setText(R.string.favoritebutton);
+                mFavoriteButton.setCompoundDrawablesWithIntrinsicBounds(image, null, null, null);
+            }else {
+                mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saveButton();
+                    }
+                });
+            }
+        }
+    });
+
+}
+
+    /**
+     * onSaveButtonClicked is called when the "save" button is clicked.
+     * It retrieves user input and inserts that new task data into the underlying database.
+     */
+
+    public void saveButton() {
+
+       titlea = titleFavs;
+        int id = mTaskId;
+
+        final Favorites favorites = new Favorites(id, titlea);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoritesDao().insertFavorites(favorites);
+                finish();
+            }
+        });
+
+
+
     }
 
     /**
@@ -114,10 +205,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         mEditCounty=findViewById(R.id.story_county);
         mEditState=findViewById(R.id.story_state);
         mEditUrl=findViewById(R.id.url_text_view);
-
-
-
-
+        mDateTime=findViewById(R.id.taskUpdatedAt);
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +235,7 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
         mEditCounty.setText(stories.getStorycounty());
         mEditState.setText(stories.getStorystate());
         mEditUrl.setText(stories.getAudioUrl());
+        mDateTime.setText(dateFormat.format(stories.getUpdatedAt()));
 
 
     }
@@ -157,9 +246,8 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
      */
     public void onSaveButtonClicked() {
 
-            String audiotitle = mEditT.getText().toString();
-
-        String ancestorfirstname = mEditAFN.getText().toString();
+           audiotitle = mEditT.getText().toString();
+           String ancestorfirstname = mEditAFN.getText().toString();
         String ancestorlastname = mEditALN.getText().toString();
         String familyname = mEditFN.getText().toString();
         String storycity = mEditCity.getText().toString();
@@ -169,11 +257,11 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
 
 
         //Create a date variable and assign to it the current Date
-       // Date date = new Date();
+        Date date = new Date();
 
 
         // Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, null);
+        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, date);
         // Get the diskIO Executor from the instance of AppExecutors and
         // call the diskIO execute method with a new Runnable and implement its run method
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

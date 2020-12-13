@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.android.kstories.AttractionsRecyclerView;
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserSavedAudioFragment extends Fragment  {
@@ -34,7 +36,13 @@ public class UserSavedAudioFragment extends Fragment  {
     // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private UserStoryAdapter mAdapter;
+    private List<Story> mStoryEntries = new ArrayList<>();
+    Button mButton;
 
+    /**
+     * TextView that is displayed when the list is empty
+     */
+    private TextView mEmptyStateTextView;
 
     //Implement Database
     private AppDatabase mDb;
@@ -60,9 +68,12 @@ public class UserSavedAudioFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View rootView = inflater.inflate(R.layout.activity_saved_user_audio, container, false);
+        AttractionsRecyclerView  mRecyclerView =
+                (AttractionsRecyclerView) rootView.findViewById(R.id.recyclerViewTasks);
+        mRecyclerView.setEmptyView(rootView.findViewById(R.id.empty_view));
 
         // Set the RecyclerView to its corresponding view
-        mRecyclerView = rootView.findViewById(R.id.recyclerViewTasks);
+       // mRecyclerView = rootView.findViewById(R.id.recyclerViewTasks);
 
         // Set the layout for the RecyclerView to be a linear layout, which measures and
         // positions items within a RecyclerView into a linear list
@@ -81,8 +92,21 @@ public class UserSavedAudioFragment extends Fragment  {
 
         setupViewModel();
 
+
+//        if (mStoryEntries.isEmpty()) {
+//            mRecyclerView.setVisibility(View.GONE);
+//            mEmptyStateTextView.setVisibility(View.VISIBLE);
+//        }
+//        else {
+//            mRecyclerView.setVisibility(View.VISIBLE);
+//            mEmptyStateTextView.setVisibility(View.GONE);
+//        }
+
+
        return rootView;
     }
+
+
 
     private void setupViewModel() {
 

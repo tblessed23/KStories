@@ -12,7 +12,6 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.android.kstories.search.PopulateSearchData;
 
 @Database(entities = {Story.class, Favorites.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
@@ -68,7 +67,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
                         .addMigrations(MIGRATION_1_2)
-                        .addCallback(callback)
                         .allowMainThreadQueries()
                         .build();
             }
@@ -77,14 +75,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    private static RoomDatabase.Callback callback = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            PopulateSearchData populateSearchData =  new PopulateSearchData(sInstance);
-            populateSearchData.populateData();
-        }
-    };
+
 
     public abstract StoryDao storyDao();
     public abstract FavoritesDao favoritesDao();
