@@ -13,7 +13,7 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {Story.class, Favorites.class}, version = 2, exportSchema = false)
+@Database(entities = {Story.class, Favorites.class}, version = 3, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -52,8 +52,14 @@ public abstract class AppDatabase extends RoomDatabase {
 //    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
 //        @Override
 //        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            //database.execSQL("INSERT INTO 'profileu' (userId, firstname, lastname, city, state, country, phone, email, displayname, updatedAt) " + "SELECT userId, firstname, lastname, city, state, country, phone, email, displayname, updatedAt FROM Profileu");
-//            database.execSQL("INSERT INTO 'favorites' (id, titleFavorites) " + "SELECT id, titleFavorites FROM Favorites");
+//            database.execSQL("ALTER TABLE 'story' "
+//                    + " ADD COLUMN security BOOLEAN");
+//
+//            database.execSQL("ALTER TABLE 'story' ADD COLUMN 'audiotitle' STRING NOT NULL");
+//            database.execSQL("ALTER TABLE 'story' ADD COLUMN 'storystate' STRING NOT NULL");
+//
+//            database.execSQL("ALTER TABLE 'favorites' "
+//                    + " ADD COLUMN urlFavorites STRING");
 //        }
 //    };
 
@@ -67,6 +73,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, AppDatabase.DATABASE_NAME)
                         .addMigrations(MIGRATION_1_2)
+                        .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build();
             }

@@ -16,13 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.kstories.StoriesRecyclerView;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Favorites;
 import com.example.android.kstories.model.FavoritesViewModel;
-import com.example.android.kstories.model.MainViewModel;
-import com.example.android.kstories.model.Story;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +33,9 @@ public class FavoritesFragment extends Fragment {
     private static final String TAG = FavoritesFragment.class.getSimpleName();
     private AppDatabase mDb;
     private FavoritesAdapter mAdapter;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
 
+    private RecyclerView.LayoutManager layoutManager;
+private StoriesRecyclerView mRecyclerView;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -54,29 +53,27 @@ public class FavoritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
+        View rootView = inflater.inflate(R.layout.activity_favorites, container, false);
 
         setHasOptionsMenu(true);
-
-// Find a reference to the {@link RecyclerView} in the layout
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
-
+        mRecyclerView = rootView.findViewById(R.id.recyclerViewFavorites);
+        mRecyclerView.setEmptyView(rootView.findViewById(R.id.empty_view_favorites));
         // use a grid layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
 
         // Create a new adapter that takes an empty list of moviess as input
         mAdapter = new FavoritesAdapter(getActivity(), new ArrayList<Favorites>());
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
 
   /*
@@ -103,7 +100,7 @@ public class FavoritesFragment extends Fragment {
                     }
                 });
             }
-        }).attachToRecyclerView(recyclerView);
+        }).attachToRecyclerView(mRecyclerView);
 
         setUpViewModel();
         return rootView;

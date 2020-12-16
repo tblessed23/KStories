@@ -15,8 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
@@ -55,6 +58,7 @@ String audiotitle;
     int storyId;
     String titleFavs;
     String titlea;
+    String audioa;
     // Constant for date format
     private static final String DATE_FORMAT = "MM/dd/yyy";
     // Date formatter
@@ -67,7 +71,8 @@ String audiotitle;
 
     // Member variable for the Database
    private AppDatabase mDb;
-
+    //defining AwesomeValidation object
+private AwesomeValidation awesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,12 @@ String audiotitle;
         mFavoriteButton = findViewById(R.id.favoriteButton);
         initViews();
 
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+
+        awesomeValidation.addValidation(this, R.id.filleAncestorLNdTextField2, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+        awesomeValidation.addValidation(this, R.id.filledAncestorLNTextField3, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+        awesomeValidation.addValidation(this, R.id.filledFamilyNameTextField4, "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", R.string.nameerror);
+
         // Initialize member variable for the data base
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -85,21 +96,18 @@ String audiotitle;
         }
 
         Intent intent = getIntent();
-//        if (getIntent().hasExtra(Extr)){
-//            titleFavorities = stories.getAudiotitle();
-//        }
+
+        if (getIntent().hasExtra("Stories"))
+            titlea = getIntent().getStringExtra("Stories");
+
+        if (getIntent().hasExtra("StoriesLink"))
+            audioa = getIntent().getStringExtra("StoriesLink");
+
             //titleFavorities.
         //titleFavorities.setText(getIntent().getStringExtra("title"));
 
         // Using getParcelableExtra(String key) method
-        if (intent.hasExtra("Stories")) {
-            stories= intent.getParcelableExtra("Stories");
 
-
-
-            titlea = stories.getAudiotitle();
-
-        }
 
         if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
             mButton.setText(R.string.update_button);
@@ -142,12 +150,13 @@ String audiotitle;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
 
     }
-public void queryFavorites(){
+
+    public void queryFavorites(){
     LiveData<Favorites> currentId = mDb.favoritesDao().loadTaskById(mTaskId);
     currentId.observe(this, new Observer<Favorites>() {
         @Override
@@ -176,11 +185,11 @@ public void queryFavorites(){
      */
 
     public void saveButton() {
-
-       titlea = titleFavs;
+        String audiolink = audioa;
+        String audioa = titlea;
         int id = mTaskId;
 
-        final Favorites favorites = new Favorites(id, titlea);
+        final Favorites favorites = new Favorites(id, audioa, audiolink);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -197,23 +206,38 @@ public void queryFavorites(){
      * initViews is called from onCreate to init the member variable views
      */
     private void initViews() {
-        mEditAFN = findViewById(R.id.ancestor_first_name);
-        mEditALN= findViewById(R.id.ancestor_last_name);
+        mEditAFN = findViewById(R.id.edit_ancestor_first_name);
+        mEditALN= findViewById(R.id.edit_ancestor_last_name);
         mEditT=findViewById(R.id.story_title);
-        mEditFN=findViewById(R.id.family_name);
+        mEditFN=findViewById(R.id.edit_family_name);
         mEditCity=findViewById(R.id.story_city);
         mEditCounty=findViewById(R.id.story_county);
         mEditState=findViewById(R.id.story_state);
         mEditUrl=findViewById(R.id.url_text_view);
         mDateTime=findViewById(R.id.taskUpdatedAt);
+
+
         mButton = findViewById(R.id.saveButton);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSaveButtonClicked();
+
+                if (view == mButton) {
+                    onSaveButtonClicked();
+                }
             }
         });
     }
+
+//    private void submitForm() {
+//        //first validate the form then move ahead
+//        //if this becomes true that means validation is successfull
+//        if (awesomeValidation.validate()) {
+//            Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
+//
+//            //process the data further
+//        }
+//    }
 
     /**
      * populateUI would be called to populate the UI when in update mode
@@ -238,6 +262,7 @@ public void queryFavorites(){
         mDateTime.setText(dateFormat.format(stories.getUpdatedAt()));
 
 
+
     }
 
     /**
@@ -246,41 +271,46 @@ public void queryFavorites(){
      */
     public void onSaveButtonClicked() {
 
-           audiotitle = mEditT.getText().toString();
-           String ancestorfirstname = mEditAFN.getText().toString();
-        String ancestorlastname = mEditALN.getText().toString();
-        String familyname = mEditFN.getText().toString();
-        String storycity = mEditCity.getText().toString();
-        String storycounty = mEditCounty.getText().toString();
-        String storystate =mEditState.getText().toString();
-        String audiourl = mEditUrl.getText().toString();
+        if (awesomeValidation.validate()) {
+            Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
+            audiotitle = mEditT.getText().toString();
+            String ancestorfirstname = mEditAFN.getText().toString();
+            String ancestorlastname = mEditALN.getText().toString();
+            String familyname = mEditFN.getText().toString();
+            String storycity = mEditCity.getText().toString();
+            String storycounty = mEditCounty.getText().toString();
+            String storystate = mEditState.getText().toString();
+            String audiourl = mEditUrl.getText().toString();
 
 
-        //Create a date variable and assign to it the current Date
-        Date date = new Date();
+            //Create a date variable and assign to it the current Date
+            Date date = new Date();
 
 
-        // Make taskEntry final so it is visible inside the run method
-        final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, date);
-        // Get the diskIO Executor from the instance of AppExecutors and
-        // call the diskIO execute method with a new Runnable and implement its run method
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                // COMPLETED (9) insert the task only if mTaskId matches DEFAULT_TASK_ID
-                // Otherwise update it
-                // call finish in any case
-                if (mTaskId == DEFAULT_TASK_ID) {
-                    // insert new task
-                    mDb.storyDao().insertTask(taskEntry);
-                } else {
-                    //update task
-                    taskEntry.setUserId(mTaskId);
-                    mDb.storyDao().updateTask(taskEntry);
+            // Make taskEntry final so it is visible inside the run method
+            final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, null, date);
+            // Get the diskIO Executor from the instance of AppExecutors and
+            // call the diskIO execute method with a new Runnable and implement its run method
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    // COMPLETED (9) insert the task only if mTaskId matches DEFAULT_TASK_ID
+                    // Otherwise update it
+                    // call finish in any case
+                    if (mTaskId == DEFAULT_TASK_ID) {
+                        // insert new task
+                        mDb.storyDao().insertTask(taskEntry);
+                    } else {
+                        //update task
+                        taskEntry.setUserId(mTaskId);
+                        mDb.storyDao().updateTask(taskEntry);
+                    }
+                    finish();
                 }
-                finish();
-            }
-        });
+            });
+
+
+        }
     }
 
 

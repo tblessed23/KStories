@@ -8,6 +8,7 @@
 
     <!-- Height of each list item -->
     <dimen name="list_item_height">88dp</dimen>
+    <dimen name="list_item_height_browse">200dp</dimen>
 
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
@@ -17,4 +18,9 @@
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
     <dimen name="detail_inner_horiz_margin">16dp</dimen>
     <dimen name="detail_body_bottom_margin">58dp</dimen>
+
+    <dimen name="android_standard_sixteen">16dp</dimen>
+
+    <dimen name="card_margin_eight">8dp</dimen>
+    <dimen name="card_margin_five">5dp</dimen>
 </resources>

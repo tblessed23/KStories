@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.FavoritesActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    tools:context=".user.FavoritesFragment">
 
-</FrameLayout>
+    <!-- A RecyclerView with some commonly used attributes -->
+    <com.example.android.kstories.StoriesRecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/recyclerViewFavorites"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="28dp"/>
+
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/toolbar_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?colorPrimary"-->
+<!--        android:elevation="4dp">-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/my_toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:background="?attr/colorPrimary"-->
+<!--            app:title="Favorites"-->
+<!--            app:titleTextColor="@color/white"-->
+<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:layout_gravity="center"
+        android:paddingRight="@dimen/android_standard_sixteen"
+        android:paddingTop="@dimen/android_standard_sixteen"
+        android:paddingBottom="@dimen/android_standard_sixteen"
+        android:paddingLeft="@dimen/android_standard_sixteen"
+        android:text="@string/empty_state_favorites"
+        android:id="@+id/empty_view_favorites"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

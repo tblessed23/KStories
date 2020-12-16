@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Simple RecyclerView subclass that supports providing an empty view (which
  * is displayed when the adapter has no data and hidden otherwise).
  */
-public class AttractionsRecyclerView extends RecyclerView {
+public class StoriesRecyclerView extends RecyclerView {
     private View mEmptyView;
 
     private AdapterDataObserver mDataObserver = new AdapterDataObserver() {
@@ -21,15 +21,15 @@ public class AttractionsRecyclerView extends RecyclerView {
         }
     };
 
-    public AttractionsRecyclerView(Context context) {
+    public StoriesRecyclerView(Context context) {
         super(context);
     }
 
-    public AttractionsRecyclerView(Context context, AttributeSet attrs) {
+    public StoriesRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public AttractionsRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public StoriesRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

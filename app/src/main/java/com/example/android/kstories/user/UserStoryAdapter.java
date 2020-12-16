@@ -130,6 +130,9 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                // intent.putExtra("title", title);
                 String elementTitle =  mStoryEntries.get(position).getAudiotitle();
                 intent.putExtra("Stories",  elementTitle);
+
+                String elementUrl =  mStoryEntries.get(position).getAudioUrl();
+                intent.putExtra("StoriesLink",  elementUrl);
                 mContext.startActivity(intent);
             }
         });
@@ -158,6 +161,10 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                                int elementId = mStoryEntries.get(position).getUserId();
                                 Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
                                 intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementId);
+
+//                                String elementUrl =  mStoryEntries.get(position).getAudioUrl();
+//                                intent.putExtra("StoriesUrl",  elementUrl);
+
                                 mContext.startActivity(intent);
 
 //                                Intent intent =  new Intent(mContext, UserPlayAudioActivity.class);

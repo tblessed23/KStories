@@ -12,7 +12,7 @@
 
 
     <!-- RecyclerView that is responsible for holding recorded stories -->
-    <com.example.android.kstories.AttractionsRecyclerView
+    <com.example.android.kstories.StoriesRecyclerView
         android:id="@+id/recyclerViewTasks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -36,7 +36,7 @@ public class NowPlaying extends AppCompatActivity {
     // Constant for logging
     private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
-    TextView mEditT, mEditAfN;
+    TextView mEditT, mEditAfN, mState, mCounty, mFullname, mFamilyName;
 
     //Exo-player Variables
 
@@ -110,8 +110,11 @@ public class NowPlaying extends AppCompatActivity {
      */
     private void initViews() {
 
-        mEditT = findViewById(R.id.story_title);
-        //mEditAfN = findViewById(R.id.ancestor_first_name);
+        mEditT = findViewById(R.id.titleDetails);
+        mState = findViewById(R.id.stateDetails);
+        mCounty = findViewById(R.id.countyDetails);
+        mFullname = findViewById(R.id.nameDetails);
+        mFamilyName = findViewById(R.id.familynameDetails);
 
         // Initialize the player view.
         mPlayerView = findViewById(R.id.playerView);
@@ -129,8 +132,14 @@ public class NowPlaying extends AppCompatActivity {
             return;
         }
 
+        String placeholderState = stories.getStorycity() + "," + "" +  stories.getStorystate();
+        String placeholderFullname = stories.getAncestorlastname()+ "," + "" +  stories.getAncestorfirstname();
 
         mEditT.setText(stories.getAudiotitle());
+        mState.setText(placeholderState);
+        mCounty.setText(stories.getStorycounty());
+        mFullname.setText(placeholderFullname);
+        mFamilyName.setText(stories.getFamilyname());
         //mEditAfN.setText(stories.getAudioUrl());
 
         assert videoLink != null;

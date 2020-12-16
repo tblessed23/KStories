@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,9 @@ import java.util.Locale;
 
 public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.BrowseViewHolder> {
 
+    /***The layout for this file is browse_all_list***
+     *
+     */
 
     // Constant for date format
     private static final String DATE_FORMAT = "MM/dd/yyy";
@@ -89,15 +93,33 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
         // Determine the values of the wanted data
         final Story stories = mStoryEntries.get(position);
         final String title = stories.getAudiotitle();
-        final String ancestorfn = stories.getAncestorfirstname();
+        final String ancestorln = stories.getAncestorlastname();
+        final String state = stories.getStorystate();
+        final String city = stories.getStorycity();
 
         mDb = AppDatabase.getInstance(mContext);
 
+        String replaceln = mContext.getResources().getString(R.string.browse_lastname) + " " + ancestorln;
+        String replacestate = city + ", " + state;
+        String onlystate = state;
+        String nolastname = "";
 
+        if (city == null){
+            holder.state.setText(onlystate);
+        } else {
 
+            holder.state.setText(replacestate);
+        }
+
+        if (ancestorln.isEmpty()) {
+            holder.ancestorLNView.setText(nolastname);
+        } else {
+            holder.ancestorLNView.setText(replaceln);
+        }
         //Set values
         holder.titleView.setText(title);
-        holder.ancestorFNView.setText(ancestorfn);
+
+
 
         //Handle Editing Database Entry
         holder.arrow.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +174,9 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
 
         // Class variables for the task description and priority TextViews
         TextView titleView;
-        TextView ancestorFNView;
+        TextView ancestorLNView;
+        TextView state;
+
         ImageButton arrow;
 
         /**
@@ -163,9 +187,10 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
         public BrowseViewHolder(View itemView) {
             super(itemView);
 
-            titleView = itemView.findViewById(R.id.storytitle_text_view);
+            titleView = itemView.findViewById(R.id.browse_title_text_view);
             //updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
-            ancestorFNView= itemView.findViewById(R.id.ancestorfirstname_text_view);
+            ancestorLNView= itemView.findViewById(R.id.browse_lastname_text_view);
+            state= itemView.findViewById(R.id.browse_state_text_view);
             arrow= itemView.findViewById(R.id.browse_all_button);
 
 

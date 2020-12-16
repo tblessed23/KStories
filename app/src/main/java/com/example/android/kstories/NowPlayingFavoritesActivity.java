@@ -1,32 +1,30 @@
-package com.example.android.kstories.user;
-
-// Extra for the task ID to be received in the intent
+package com.example.android.kstories;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.Story;
 import com.example.android.kstories.model.UserEditViewModel;
 import com.example.android.kstories.model.UserEditViewModelFactory;
+import com.example.android.kstories.user.UserEditAudioDetailsActivity;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 
-public class UserPlayAudioActivity extends AppCompatActivity {
+/***This activity ties into the FavoritesActivity/FavoritesAdapter/FavoritesFragment**/
+
+public class NowPlayingFavoritesActivity extends AppCompatActivity {
 
     public static final String EXTRA_TASK_ID = "extraTaskId";
     // Extra for the task ID to be received after rotation
@@ -35,9 +33,9 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
     // Constant for logging
-    private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
+    private static final String TAG = NowPlayingFavoritesActivity.class.getSimpleName();
     // Fields for views
-    TextView mEditT, mAudioTextView;
+    TextView mEditT;
 
     //Exo-player Variables
 
@@ -49,16 +47,13 @@ public class UserPlayAudioActivity extends AppCompatActivity {
     private Uri videoLink;
     String textvurl;
     private Story storiesa;
-    String intentUrl;
 
     private int mTaskId = DEFAULT_TASK_ID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_play_audio);
-
+        setContentView(R.layout.activity_now_playing_favorites);
 
         initViews();
 
@@ -71,11 +66,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
             mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
         }
 
-       Intent intent = getIntent();
-//        if (getIntent().hasExtra("StoriesUrl"))
-//            intentUrl = getIntent().getStringExtra("StoriesUrl");
-
-
+        Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
 
             //  mButton.setText(R.string.update_button);
@@ -105,11 +96,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
             }
         }
 
-
-
-
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -122,9 +109,7 @@ public class UserPlayAudioActivity extends AppCompatActivity {
      */
     private void initViews() {
 
-        mEditT = findViewById(R.id.story_title);
-        mAudioTextView = findViewById(R.id.playAudioUrl);
-        //mEditAfN = findViewById(R.id.ancestor_first_name);
+        mEditT = findViewById(R.id.titleDetails);
 
         // Initialize the player view.
         mPlayerView = findViewById(R.id.playerView);
@@ -143,15 +128,16 @@ public class UserPlayAudioActivity extends AppCompatActivity {
         }
 
 
+
         mEditT.setText(stories.getAudiotitle());
-        mAudioTextView.setText(stories.getAudioUrl());
+
         //mEditAfN.setText(stories.getAudioUrl());
 
         assert videoLink != null;
         videoLink = Uri.parse(stories.getAudioUrl());
 
-        initializePlayer();
 
+        initializePlayer();
 
 
     }

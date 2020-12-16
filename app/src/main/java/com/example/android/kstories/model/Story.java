@@ -18,17 +18,18 @@ public class Story  {
 
     @PrimaryKey(autoGenerate = true)
     private int userId;
-
+    @NonNull
     private String audiotitle;
     private String storycity;
     private String storycounty;
-
+    @NonNull
     private String storystate;
     private String ancestorfirstname;
     private String ancestorlastname;
     private String familyname;
     @ColumnInfo(name = "updated_at")
     private String audioUrl;
+    private Boolean security;
     private Date updatedAt;
 
 
@@ -42,7 +43,7 @@ public class Story  {
 
     //Regular Constructor
     @Ignore
-    public Story(String audiotitle, String storycity, String storycounty,  String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
+    public Story(@NonNull String audiotitle, String storycity, String storycounty,  @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Boolean security, Date updatedAt) {
         this.audiotitle = audiotitle;
         this.storycity = storycity;
         this.storycounty = storycounty;
@@ -51,12 +52,13 @@ public class Story  {
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
         this.audioUrl = audioUrl;
+        this.security = security;
         this.updatedAt = updatedAt;
     }
 
     //Id Constructor
 
-    public Story(int userId, String audiotitle, String storycity, String storycounty, String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
+    public Story(int userId, @NonNull String audiotitle, String storycity, String storycounty, @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Boolean security, Date updatedAt) {
         this.userId = userId;
         this.audiotitle = audiotitle;
         this.storycity = storycity;
@@ -66,6 +68,7 @@ public class Story  {
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
         this.audioUrl = audioUrl;
+        this.security = security;
         this.updatedAt = updatedAt;
     }
 
@@ -87,11 +90,11 @@ public class Story  {
 
  /**Audio Title**/
 
-    public String getAudiotitle() {
+    public @NonNull String getAudiotitle() {
         return audiotitle;
     }
 
-    public void setAudiotitle(String audiotitle) {
+    public void setAudiotitle(@NonNull String audiotitle) {
         this.audiotitle= audiotitle;
     }
 
@@ -115,11 +118,11 @@ public class Story  {
     }
 
     /***Story State***/
-    public String getStorystate() {
+    public @NonNull String getStorystate() {
         return storystate;
     }
 
-    public void setStorystate( String storystate) {
+    public void setStorystate(@NonNull String storystate) {
         this.storystate = storystate;
     }
 
@@ -163,6 +166,16 @@ public class Story  {
         this.audioUrl = audioUrl;
     }
 
+    /**Security: Public or Private**/
+
+    public Boolean getSecurity() {
+        return security;
+    }
+
+    public void setSecurity(Boolean security) {
+        this.security = security;
+    }
+
     /***DATE/Time***/
 
     public Date getUpdatedAt() {
@@ -190,4 +203,7 @@ public class Story  {
                 }
             };
 
+    public class StoryMinimal {
+
+    }
 }

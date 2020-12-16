@@ -1,13 +1,19 @@
 package com.example.android.kstories.user;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.kstories.NowPlaying;
+import com.example.android.kstories.NowPlayingFavoritesActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.Favorites;
 
@@ -15,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder> {
+
+    //The Layout for this file is favorite_layout
 
     // Class variables for the List that holds task data and the Context
     private List<Favorites> mTaskEntries;
@@ -58,11 +66,25 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         Favorites taskEntry = mTaskEntries.get(position);
         String titleFavorities = taskEntry.getTitleFavorites();
         int id = taskEntry.getId();
+        String urlFavorites = taskEntry.getUrlFavorites();
 
 
         //Set values
-        holder.taskDescriptionView.setText(titleFavorities);
-        holder.updatedAtView.setText(String.valueOf(id));
+        holder.favoriteTitle.setText(titleFavorities);
+        holder.favoriteId.setText(String.valueOf(id));
+        holder.favoriteUrl.setText(urlFavorites);
+
+        //Handle Editing Database Entry
+        holder.arrow.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                int elementId = mTaskEntries.get(position).getId();
+                Intent intent = new Intent(mContext, NowPlayingFavoritesActivity.class);
+                intent.putExtra(NowPlayingFavoritesActivity.EXTRA_TASK_ID, elementId);
+                mContext.startActivity(intent);
+            }
+        });
 
 
     }
@@ -99,8 +121,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     class FavoritesViewHolder extends RecyclerView.ViewHolder {
 
         // Class variables for the task description and priority TextViews
-        TextView taskDescriptionView;
-        TextView updatedAtView;
+        TextView favoriteTitle;
+        TextView favoriteId;
+        TextView favoriteUrl;
+        ImageButton arrow;
 
 
         /**
@@ -111,8 +135,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         public FavoritesViewHolder(View itemView) {
             super(itemView);
 
-            taskDescriptionView = itemView.findViewById(R.id.taskDescription);
-            updatedAtView = itemView.findViewById(R.id.taskUpdatedAt);
+            favoriteTitle = itemView.findViewById(R.id.favorite_title);
+            favoriteId = itemView.findViewById(R.id.favorite_id);
+            favoriteUrl = itemView.findViewById(R.id.favorite_url);
+            arrow= itemView.findViewById(R.id.favorite_listen_button);
         }
     }
 }

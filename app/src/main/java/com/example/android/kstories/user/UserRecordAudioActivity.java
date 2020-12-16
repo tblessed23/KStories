@@ -47,7 +47,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class UserRecordAudioActivity extends AppCompatActivity implements MediaRecorder.OnInfoListener, MediaPlayer.OnCompletionListener{
+public class UserRecordAudioActivity extends AppCompatActivity implements
+        MediaRecorder.OnInfoListener, MediaPlayer.OnCompletionListener{
 
     private static MediaRecorder mediaRecorder;
     private static MediaPlayer mediaPlayer;
@@ -103,7 +104,7 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
     // Member variable for the Database
     private AppDatabase mDb;
     Button mButton;
-   TextInputEditText mEditT, mEditState;
+    TextInputEditText mEditT, mEditState;
     private int mTaskId = DEFAULT_TASK_ID;
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
@@ -151,13 +152,16 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
         }
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(CharSequence s, int start, int before, int
+                count) {
             String stateInput = mEditState.getText().toString().trim();
             String titleInput = mEditT.getText().toString().trim();
-            mSaveButton.setEnabled(!stateInput.isEmpty() && !titleInput.isEmpty());
+            mSaveButton.setEnabled(!stateInput.isEmpty() && !
+                    titleInput.isEmpty());
 
         }
         @Override
@@ -182,14 +186,16 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
     private void showDuration() {
         if (mediaPlayer != null) { //make sure media player was created
             long totalDuration = mediaPlayer.getDuration();
-            Toast.makeText(this, "Your duration: " + RecordingWorks.milliSecondsToTimer(totalDuration), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your duration: " +
+                    RecordingWorks.milliSecondsToTimer(totalDuration), Toast.LENGTH_LONG).show();
             intDuration = mediaPlayer.getDuration();
         }
     }
 
     //Create file path for file uploaded into Firebase Storage
     private String customFilepath() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy_HH:mm", Locale.US);
+        SimpleDateFormat dateFormat = new SimpleDateFormat
+                ("dd_MMM_yyyy_HH:mm", Locale.US);
         String date = dateFormat.format(new Date());
 
         return date + ".3pg";
@@ -213,10 +219,22 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setDataSource(audioFilePath);
         mediaPlayer.setOnCompletionListener(this::onCompletion);
-        mediaPlayer.prepare();
-        mediaPlayer.start();
-        showDuration();
-        showTimer();
+mediaPlayer.prepareAsync();
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                Toast.makeText(UserRecordAudioActivity.this,"prepatre",Toast.LENGTH_LONG).show();
+                mediaPlayer.start();
+                showDuration();
+                showTimer();
+            }
+
+        });
+
+
+
+
+
     }
 
 
@@ -224,6 +242,11 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
 
 
     public void recordButton(View view) {
+        second = -1;
+        minute = 0;
+        hour = 0;
+        textView.setText("00:00:00");
+
         isRecording = true;
         mStopButton.setEnabled(true);
         mPlayButton.setEnabled(false);
@@ -373,10 +396,10 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
      */
     public void onSaveButtonClicked() {
         downloadfile();
-            loadingView.start();
+        loadingView.start();
 
 
-}
+    }
 
     private String downloadfile() {
 
@@ -400,23 +423,30 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
             }
         }).addOnSuccessListener(new
 
+
                                         OnSuccessListener<UploadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess
-                                                    (UploadTask.TaskSnapshot taskSnapshot) {
+                                                    (UploadTask.TaskSnapshot
+                                                             taskSnapshot) {
 
-                                                Log.i("Mainq", "File uri: " + taskSnapshot.toString());
-                                                Toast.makeText(UserRecordAudioActivity.this, "Check Firebase Console",
-                                                        Toast.LENGTH_SHORT).show();
+                                                Log.i("Mainq", "File uri: " +
+                                                        taskSnapshot.toString());
+                                                Toast.makeText
+                                                        (UserRecordAudioActivity.this, "Check Firebase Console",
+
+                                                                Toast.LENGTH_SHORT).show();
 
                                             }
 
                                         });
 
 
-       uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot,
+                Task<Uri>>() {
             @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task)
+                    throws Exception {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
@@ -427,15 +457,17 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                     downloadUri = task.getResult();
+                    downloadUri = task.getResult();
                     assert downloadUri != null;
                     final String audiourl = downloadUri.toString();
                     String audiotitle = mEditT.getText().toString();
                     String storystate = mEditState.getText().toString();
                     Date date = new Date();
-                    final Story upload = new Story(audiotitle,null, null, storystate, null, null, null, audiourl,
+                    final Story upload = new Story(audiotitle,null, null,
+                            storystate, null, null, null, audiourl, null,
                             date);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    AppExecutors.getInstance().diskIO().execute(new Runnable()
+                    {
                         @Override
                         public void run() {
                             // Insert the task only if mTaskId matches
@@ -456,12 +488,13 @@ public class UserRecordAudioActivity extends AppCompatActivity implements MediaR
             }
         });
 
-return null;
+        return null;
     }
 
     public void onInfo(MediaRecorder mr, int what, int extra) {
         if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
-            Toast.makeText(this, "Maximum Recording Session Reached", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Maximum Recording Session Reached",
+                    Toast.LENGTH_LONG).show();
             stopButton(view);
         }
 
@@ -473,4 +506,9 @@ return null;
     public void onCompletion(MediaPlayer mp) {
         stopButton(view);
     }
+
+//    @Override
+//    public void onPrepared(MediaPlayer mp) {
+//       mediaPlayer.start();
+//    }
 }

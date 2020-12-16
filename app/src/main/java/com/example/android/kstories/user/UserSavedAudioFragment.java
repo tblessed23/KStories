@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.android.kstories.AttractionsRecyclerView;
+import com.example.android.kstories.StoriesRecyclerView;
 import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
@@ -34,7 +34,7 @@ public class UserSavedAudioFragment extends Fragment  {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Member variables for the adapter and RecyclerView
-    private RecyclerView mRecyclerView;
+    private StoriesRecyclerView mRecyclerView;
     private UserStoryAdapter mAdapter;
     private List<Story> mStoryEntries = new ArrayList<>();
     Button mButton;
@@ -68,8 +68,7 @@ public class UserSavedAudioFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View rootView = inflater.inflate(R.layout.activity_saved_user_audio, container, false);
-        AttractionsRecyclerView  mRecyclerView =
-                (AttractionsRecyclerView) rootView.findViewById(R.id.recyclerViewTasks);
+        mRecyclerView = rootView.findViewById(R.id.recyclerViewTasks);
         mRecyclerView.setEmptyView(rootView.findViewById(R.id.empty_view));
 
         // Set the RecyclerView to its corresponding view
