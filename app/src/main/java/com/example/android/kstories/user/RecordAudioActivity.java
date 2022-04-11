@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class UserRecordAudioActivity extends AppCompatActivity implements
+public class RecordAudioActivity extends AppCompatActivity implements
         MediaRecorder.OnInfoListener, MediaPlayer.OnCompletionListener{
 
     private static MediaRecorder mediaRecorder;
@@ -109,10 +110,16 @@ public class UserRecordAudioActivity extends AppCompatActivity implements
     // Constant for default task id to be used when not in update mode
     private static final int DEFAULT_TASK_ID = -1;
 
+    //Check if User is Authenticated
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_record_audio);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         mSaveButton = findViewById(R.id.saveRecordButton);
 
@@ -223,7 +230,7 @@ mediaPlayer.prepareAsync();
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                Toast.makeText(UserRecordAudioActivity.this,"prepatre",Toast.LENGTH_LONG).show();
+                Toast.makeText(RecordAudioActivity.this,"prepatre",Toast.LENGTH_LONG).show();
                 mediaPlayer.start();
                 showDuration();
                 showTimer();
@@ -419,7 +426,7 @@ mediaPlayer.prepareAsync();
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(UserRecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecordAudioActivity.this, "No need to Firebase Console", Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new
 
@@ -433,7 +440,7 @@ mediaPlayer.prepareAsync();
                                                 Log.i("Mainq", "File uri: " +
                                                         taskSnapshot.toString());
                                                 Toast.makeText
-                                                        (UserRecordAudioActivity.this, "Check Firebase Console",
+                                                        (RecordAudioActivity.this, "Check Firebase Console",
 
                                                                 Toast.LENGTH_SHORT).show();
 
@@ -459,12 +466,14 @@ mediaPlayer.prepareAsync();
                 if (task.isSuccessful()) {
                     downloadUri = task.getResult();
                     assert downloadUri != null;
+                    int pid = 0;
                     final String audiourl = downloadUri.toString();
+                    String userId = FirebaseAuth.getInstance().getUid();
                     String audiotitle = mEditT.getText().toString();
                     String storystate = mEditState.getText().toString();
                     Date date = new Date();
-                    final Story upload = new Story(audiotitle,null, null,
-                            storystate, null, null, null, audiourl, null,
+                    final Story upload = new Story(pid, userId, audiotitle,null, null,
+                            storystate, null, null, null, audiourl,
                             date);
                     AppExecutors.getInstance().diskIO().execute(new Runnable()
                     {
@@ -500,6 +509,14 @@ mediaPlayer.prepareAsync();
 
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+}
 
 
     @Override

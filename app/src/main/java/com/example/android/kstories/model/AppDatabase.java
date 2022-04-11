@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.room.Dao;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -12,8 +13,14 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.android.kstories.loggingin.UserDao;
+import com.example.android.kstories.search.PopulateSearchData;
 
-@Database(entities = {Story.class, Favorites.class}, version = 3, exportSchema = false)
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+@Database(entities = {Story.class, Favorites.class, User.class}, version = 6, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -21,6 +28,10 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "storieslist";
     private static AppDatabase sInstance;
+
+    private static final int NUMBER_OF_THREADS = 4;
+    public static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     /**
      * Migrate from:
@@ -82,9 +93,16 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
-
+    private static final RoomDatabase.Callback callback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            PopulateSearchData populateSearchData =  new PopulateSearchData(sInstance);
+            populateSearchData.populateData();
+        }
+    };
 
     public abstract StoryDao storyDao();
     public abstract FavoritesDao favoritesDao();
-    //public abstract ProfileuDao profileuDao();
+    public abstract UserDao userDao();
 }

@@ -83,7 +83,7 @@
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@color/fui_transparent"
+            android:background="@color/brown"
             android:layout_marginRight="16dp"
             android:src="@drawable/baseline_arrow_right_alt_black_18dp"
             android:layout_alignParentEnd="true"

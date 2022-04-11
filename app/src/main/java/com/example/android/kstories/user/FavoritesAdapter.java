@@ -65,7 +65,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         // Determine the values of the wanted data
         Favorites taskEntry = mTaskEntries.get(position);
         String titleFavorities = taskEntry.getTitleFavorites();
-        int id = taskEntry.getId();
+       String id = taskEntry.getId();
         String urlFavorites = taskEntry.getUrlFavorites();
 
 
@@ -79,7 +79,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int elementId = mTaskEntries.get(position).getId();
+                String elementId = mTaskEntries.get(position).getId();
                 Intent intent = new Intent(mContext, NowPlayingFavoritesActivity.class);
                 intent.putExtra(NowPlayingFavoritesActivity.EXTRA_TASK_ID, elementId);
                 mContext.startActivity(intent);

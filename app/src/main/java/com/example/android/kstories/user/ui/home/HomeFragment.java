@@ -6,20 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.android.kstories.R;
-import com.example.android.kstories.user.UserPlayAudioActivity;
-import com.example.android.kstories.user.UserProfileActivity;
-import com.example.android.kstories.user.UserRecordAudioActivity;
-import com.example.android.kstories.user.UserSavedAudioActivity;
-
+import com.example.android.kstories.user.PlayAudioActivity;
+import com.example.android.kstories.user.RecordAudioActivity;
 
 
 public class HomeFragment extends Fragment {
@@ -40,7 +33,7 @@ public class HomeFragment extends Fragment {
             // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
             @Override
             public void onClick(View view) {
-                Intent recordAudioIntent = new Intent(getContext(), UserRecordAudioActivity.class);
+                Intent recordAudioIntent = new Intent(getContext(), RecordAudioActivity.class);
                 startActivity(recordAudioIntent);
 
 
@@ -56,27 +49,14 @@ public class HomeFragment extends Fragment {
             // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
             @Override
             public void onClick(View view) {
-                Intent editProfileIntent = new Intent(getContext(), UserPlayAudioActivity.class);
+                Intent editProfileIntent = new Intent(getContext(), PlayAudioActivity.class);
                 startActivity(editProfileIntent);
 
 
             }
         });
 
-        // Find the Button that will go to the Record Audio page
-        Button edituserAudio = (Button) rootView.findViewById(R.id.audio_edit_user_details_button);
 
-        // Set a click listener on that View
-        edituserAudio.setOnClickListener(new View.OnClickListener() {
-            // The code in this method will be executed when the Lauryn Hill songs View is clicked on.
-            @Override
-            public void onClick(View view) {
-                Intent editAudioIntent = new Intent(getContext(), UserProfileActivity.class);
-                startActivity(editAudioIntent);
-
-
-            }
-        });
         return rootView;
     }
 }

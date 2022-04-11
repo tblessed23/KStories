@@ -1,20 +1,5 @@
 package com.example.android.kstories;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.os.CountDownTimer;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.example.android.kstories.user.UserAudioDetailActivity;
-import com.example.android.kstories.user.UserRecordAudioActivity;
-
-import java.io.IOException;
-
 
 //public class RecordAudio {
 //    private boolean isRecording = false;

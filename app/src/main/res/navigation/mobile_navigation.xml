@@ -17,24 +17,22 @@
         android:label="@string/menu_aboutus_title"
         tools:layout="@layout/fragment_gallery" />
 
-    <fragment
+    <activity
         android:id="@+id/nav_browse"
-        android:name="com.example.android.kstories.BrowseAllFragment"
+        android:name="com.example.android.kstories.search.SearchActivity"
         android:label="@string/menu_browse_title"
         tools:layout="@layout/fragment_gallery" />
 
-
-
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.android.kstories.user.ui.gallery.GalleryFragment"
+        android:name="com.example.android.kstories.ui.UserDisplayDetailsFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
 
     <fragment
         android:id="@+id/nav_recordings"
-        android:name="com.example.android.kstories.user.UserSavedAudioFragment"
+        android:name="com.example.android.kstories.user.SavedAudioFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 

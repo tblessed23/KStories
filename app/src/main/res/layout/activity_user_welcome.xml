@@ -10,6 +10,29 @@
 
 
 
+    <TextView
+        android:id="@+id/fragment_loggedin_loggedInUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+
+    <!-- TextView that displays the update date -->
+    <TextView
+        android:id="@+id/taskUpdatedAt"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_text_view"
+        android:layout_centerInParent="true"/>
+
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
@@ -23,6 +46,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
+
+
 
 
 

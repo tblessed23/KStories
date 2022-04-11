@@ -1,56 +1,33 @@
 package com.example.android.kstories.user;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.os.Parcelable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
-import com.example.android.kstories.model.Favorites;
-import com.example.android.kstories.model.MainViewModel;
 import com.example.android.kstories.model.Story;
-import com.example.android.kstories.model.UserEditViewModel;
-import com.example.android.kstories.model.UserEditViewModelFactory;
-import com.firebase.ui.auth.data.model.User;
+import com.example.android.kstories.ui.recordings.EditAudioDetailsActivity;
 
-import java.io.Serializable;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.StoryViewHolder> {
+public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHolder> {
     private View mEmptyView;
 
     // Constant for date format
@@ -78,7 +55,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
      * @param context  the current Context
      *
      */
-    public UserStoryAdapter(Context context) {
+    public StoryAdapter(Context context) {
         mContext = context;
         //mItemClickListener = listener;
     }
@@ -115,7 +92,7 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
         final String storycounty = stories.getStorycounty();
         final String storystate = stories.getStorystate();
         final String audiourl = stories.getAudioUrl();
-        final int userid = stories.getUserId();
+        final String userid = stories.getUserId();
        final String updatedAt = dateFormat.format(stories.getUpdatedAt());
         mDb = AppDatabase.getInstance(mContext);
 
@@ -124,15 +101,20 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                int elementId = mStoryEntries.get(position).getUserId();
-                Intent intent = new Intent(mContext, UserEditAudioDetailsActivity.class);
-                intent.putExtra(UserEditAudioDetailsActivity.EXTRA_TASK_ID, elementId);
+                String elementId = mStoryEntries.get(position).getUserId();
+                Intent intent = new Intent(mContext, EditAudioDetailsActivity.class);
+                intent.putExtra(EditAudioDetailsActivity.EXTRA_TASK_ID, elementId);
+                mContext.startActivity(intent);
                // intent.putExtra("title", title);
                 String elementTitle =  mStoryEntries.get(position).getAudiotitle();
                 intent.putExtra("Stories",  elementTitle);
 
                 String elementUrl =  mStoryEntries.get(position).getAudioUrl();
                 intent.putExtra("StoriesLink",  elementUrl);
+                mContext.startActivity(intent);
+
+                int elementeyeid=  mStoryEntries.get(position).getPrimaryId();
+                intent.putExtra("StoriesId",  elementeyeid);
                 mContext.startActivity(intent);
             }
         });
@@ -158,9 +140,9 @@ public class UserStoryAdapter extends RecyclerView.Adapter<UserStoryAdapter.Stor
                             case R.id.menu1:
                                 //handle menu1 click
 
-                               int elementId = mStoryEntries.get(position).getUserId();
-                                Intent intent = new Intent(mContext, UserPlayAudioActivity.class);
-                                intent.putExtra(UserPlayAudioActivity.EXTRA_TASK_ID, elementId);
+                               String elementId = mStoryEntries.get(position).getUserId();
+                                Intent intent = new Intent(mContext, PlayAudioActivity.class);
+                                intent.putExtra(PlayAudioActivity.EXTRA_TASK_ID, elementId);
 
 //                                String elementUrl =  mStoryEntries.get(position).getAudioUrl();
 //                                intent.putExtra("StoriesUrl",  elementUrl);

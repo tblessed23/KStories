@@ -1,5 +1,6 @@
 package com.example.android.kstories.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -8,8 +9,10 @@ import androidx.room.PrimaryKey;
 public class Favorites {
 
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
+    @NonNull
+    private String id;
+    //private int userFavoritesId;
     private String titleFavorites;
     private String urlFavorites;
 
@@ -20,17 +23,17 @@ public class Favorites {
         this.urlFavorites = urlFavorites;
     }
 
-    public Favorites(int id, String titleFavorites, String urlFavorites) {
+    public Favorites(String id, String titleFavorites, String urlFavorites) {
         this.id = id;
         this.titleFavorites = titleFavorites;
         this.urlFavorites = urlFavorites;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

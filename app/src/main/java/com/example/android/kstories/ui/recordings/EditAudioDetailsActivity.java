@@ -1,4 +1,4 @@
-package com.example.android.kstories.user;
+package com.example.android.kstories.ui.recordings;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,35 +10,31 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.example.android.kstories.MainActivity;
 import com.example.android.kstories.R;
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.AppExecutors;
 import com.example.android.kstories.model.Favorites;
 import com.example.android.kstories.model.Story;
 
-import com.example.android.kstories.model.UserEditViewModel;
-import com.example.android.kstories.model.UserEditViewModelFactory;
+import com.example.android.kstories.user.StoryViewModel;
+import com.example.android.kstories.user.StoryViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class UserEditAudioDetailsActivity extends AppCompatActivity {
+public class EditAudioDetailsActivity extends AppCompatActivity {
+
 
     // Extra for the task ID to be received in the intent
     public static final String EXTRA_TASK_ID = "extraTaskId";
@@ -46,9 +42,12 @@ public class UserEditAudioDetailsActivity extends AppCompatActivity {
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
 
     // Constant for default task id to be used when not in update mode
-    private static final int DEFAULT_TASK_ID = -1;
+    private static final String DEFAULT_TASK_ID = FirebaseAuth.getInstance().getUid();
+
+    private String mTaskId = DEFAULT_TASK_ID;
+
     // Constant for logging
-    private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
+    private static final String TAG = EditAudioDetailsActivity.class.getSimpleName();
     // Fields for views
     TextInputEditText mEditT, mEditAFN, mEditALN, mEditFN, mEditCity, mEditCounty, mEditState;
     TextView mEditUrl, mDateTime;
@@ -59,6 +58,7 @@ String audiotitle;
     String titleFavs;
     String titlea;
     String audioa;
+    int ida;
     // Constant for date format
     private static final String DATE_FORMAT = "MM/dd/yyy";
     // Date formatter
@@ -67,7 +67,6 @@ String audiotitle;
     Button mButton;
     Button mFavoriteButton;
 
-    private int mTaskId = DEFAULT_TASK_ID;
 
     // Member variable for the Database
    private AppDatabase mDb;
@@ -92,7 +91,7 @@ private AwesomeValidation awesomeValidation;
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
-            mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
+            mTaskId = savedInstanceState.getString(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
         }
 
         Intent intent = getIntent();
@@ -102,6 +101,9 @@ private AwesomeValidation awesomeValidation;
 
         if (getIntent().hasExtra("StoriesLink"))
             audioa = getIntent().getStringExtra("StoriesLink");
+
+        if (getIntent().hasExtra("StoriesId"))
+            ida = getIntent().getIntExtra("StoriesId", 0);
 
             //titleFavorities.
         //titleFavorities.setText(getIntent().getStringExtra("title"));
@@ -115,15 +117,16 @@ private AwesomeValidation awesomeValidation;
             if (mTaskId == DEFAULT_TASK_ID) {
 
                 // populate the UI
-                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+
+                mTaskId = intent.getStringExtra(EXTRA_TASK_ID);
 
                 // Remove the logging and the call to loadTaskById, this is done in the ViewModel now
                 // Declare a AddTaskViewModelFactory using mDb and mTaskId
-                UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+                StoryViewModelFactory factory = new StoryViewModelFactory(mDb, mTaskId);
                 // Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
                 // for that use the factory created above AddTaskViewModel
-                final UserEditViewModel viewModel
-                        = ViewModelProviders.of(this, factory).get(UserEditViewModel.class);
+                final StoryViewModel viewModel
+                        = ViewModelProviders.of(this, factory).get(StoryViewModel.class);
 
                 // Observe the LiveData object in the ViewModel. Use it also when removing the observer
                 viewModel.getTask().observe(this, new Observer<Story>() {
@@ -145,7 +148,7 @@ private AwesomeValidation awesomeValidation;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(INSTANCE_TASK_ID, mTaskId);
+        outState.putString(INSTANCE_TASK_ID, mTaskId);
         super.onSaveInstanceState(outState);
     }
 
@@ -157,7 +160,7 @@ private AwesomeValidation awesomeValidation;
     }
 
     public void queryFavorites(){
-    LiveData<Favorites> currentId = mDb.favoritesDao().loadTaskById(mTaskId);
+    LiveData<Favorites> currentId = mDb.favoritesDao().loadFavoritesAgainById(mTaskId);
     currentId.observe(this, new Observer<Favorites>() {
         @Override
         public void onChanged(Favorites favorites) {
@@ -187,7 +190,7 @@ private AwesomeValidation awesomeValidation;
     public void saveButton() {
         String audiolink = audioa;
         String audioa = titlea;
-        int id = mTaskId;
+        String id = mTaskId;
 
         final Favorites favorites = new Favorites(id, audioa, audiolink);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -260,9 +263,6 @@ private AwesomeValidation awesomeValidation;
         mEditState.setText(stories.getStorystate());
         mEditUrl.setText(stories.getAudioUrl());
         mDateTime.setText(dateFormat.format(stories.getUpdatedAt()));
-
-
-
     }
 
     /**
@@ -282,13 +282,13 @@ private AwesomeValidation awesomeValidation;
             String storystate = mEditState.getText().toString();
             String audiourl = mEditUrl.getText().toString();
 
-
+            String userId = FirebaseAuth.getInstance().getUid();
             //Create a date variable and assign to it the current Date
             Date date = new Date();
 
 
             // Make taskEntry final so it is visible inside the run method
-            final Story taskEntry = new Story(audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, null, date);
+            final Story taskEntry = new Story(ida, userId, audiotitle, storycity, storycounty, storystate, ancestorfirstname, ancestorlastname, familyname, audiourl, date);
             // Get the diskIO Executor from the instance of AppExecutors and
             // call the diskIO execute method with a new Runnable and implement its run method
             AppExecutors.getInstance().diskIO().execute(new Runnable() {

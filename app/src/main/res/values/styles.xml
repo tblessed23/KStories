@@ -1,10 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/blue_500</item>
-        <item name="colorPrimaryDark">@color/blue_700</item>
-        <item name="colorAccent">@color/orange_a700</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary" type="color">@color/blue_500</item>
+    <item name="colorPrimaryDark" type="color">@color/blue_700</item>
+    <item name="colorAccent" type="color">@color/orange_a700</item>
     </style>
 
     <!-- Horizontal Divider-->
@@ -33,16 +33,5 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!--Login them for the firebase sign in UI-->
-    <style name="LoginTheme" parent="FirebaseUI">
-    <item name="colorPrimary">#FFFFFF</item>
-    <item name="title">Duchess Chat</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorPrimaryDark">#C5C5C5</item>
-    <item name="colorButtonNormal">@android:color/white</item>
-    <item name="windowNoTitle">true</item>
-    <item name="android:windowBackground">@drawable/login_background</item>
-    <item name="icon">@drawable/ic_logo</item>
-    </style>
 
 </resources>

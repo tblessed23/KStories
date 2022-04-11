@@ -6,21 +6,25 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.example.android.kstories.loggingin.UserViewModel;
 
 import java.util.List;
 
-public class FavoritesViewModel extends AndroidViewModel {
+public class FavoritesViewModel extends ViewModel {
 
     //Constant for logging
-    private static final String TAG = MainViewModel.class.getSimpleName();
-    private LiveData<List<Favorites>> tasks;
+    private static final String TAG = UserViewModel.class.getSimpleName();
 
-    public FavoritesViewModel(@NonNull Application application) {
-        super(application);
-        AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        Log.d(TAG, "Actively retrieving  the tasks from the Database");
-        tasks = database.favoritesDao().loadAllFavorites();
+    private final LiveData<List<Favorites>> tasks;
+
+    // Create a constructor where you call loadTaskById of the taskDao to initialize the tasks variable
+    // Note: The constructor should receive the database and the taskId
+    public FavoritesViewModel(AppDatabase database, String taskId) {
+        tasks = database.favoritesDao().loadFavoritesById(taskId);
     }
+
 
     public LiveData<List<Favorites>> getTasks() {
         return tasks;

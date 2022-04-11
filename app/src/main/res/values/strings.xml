@@ -23,6 +23,7 @@ When we first embarked upon the journey of learning more about our family histor
     <string name="browse_city">City: </string>
     <string name="browse_state">State: </string>
     <string name="browse_lastname">Ancestor Lastname: </string>
+    <string name="play_audio">Play Audio</string>
 
     <!--DeleteStoryDialogFragment-->
     <string name="dialog_delete">Are you sure you want to delete?</string>
@@ -136,5 +137,28 @@ When we first embarked upon the journey of learning more about our family histor
     <string name="browse_family_name">Family Name:</string>
 
     <string name="sign_out">Sign Out</string>
+    <string name="title_activity_login_in">LoginInActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <!---User Information-->
+    <string name="label_email">Email:</string>
+    <string name="label_firstname">Firstname:</string>
+    <string name="label_lastname">Lastname:</string>
+    <string name="label_city">City:</string>
+    <string name="label_state">State:</string>
+    <string name="label_country">Country (optional):</string>
+    <string name="label_phone">Phone:</string>
+    <string name="label_displayname">Display name displays to the public (optional):</string>
+    <string name="label_displayemail">Display Email displays to the public (optional) :</string>
+    <string name="search_label">SEARCH</string>
+
 
 </resources>

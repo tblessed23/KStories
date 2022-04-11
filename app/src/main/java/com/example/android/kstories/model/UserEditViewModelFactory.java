@@ -2,17 +2,19 @@ package com.example.android.kstories.model;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Database;
 
 import org.jetbrains.annotations.NotNull;
 
 public class UserEditViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
+
     private final AppDatabase mDb;
-    private final int mTaskId;
+    private final String mTaskId;
 
 
     // Initialize the member variables in the constructor with the parameters received
-    public  UserEditViewModelFactory(AppDatabase database, int taskId) {
+    public  UserEditViewModelFactory(AppDatabase database, String taskId) {
         mDb = database;
         mTaskId = taskId;
 

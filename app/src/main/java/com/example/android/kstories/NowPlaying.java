@@ -14,27 +14,30 @@ import android.widget.TextView;
 
 import com.example.android.kstories.model.AppDatabase;
 import com.example.android.kstories.model.Story;
-import com.example.android.kstories.model.UserEditViewModel;
-import com.example.android.kstories.model.UserEditViewModelFactory;
-import com.example.android.kstories.user.UserEditAudioDetailsActivity;
+import com.example.android.kstories.user.StoryViewModel;
+import com.example.android.kstories.user.StoryViewModelFactory;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /***This activity ties into the BrowseAllActivity/BrowseAllAdapter/BrowseAllFragment**/
 
 public class NowPlaying extends AppCompatActivity {
 
+    // Extra for the task ID to be received in the intent
     public static final String EXTRA_TASK_ID = "extraTaskId";
     // Extra for the task ID to be received after rotation
     public static final String INSTANCE_TASK_ID = "instanceTaskId";
 
     // Constant for default task id to be used when not in update mode
-    private static final int DEFAULT_TASK_ID = -1;
+    private static final String DEFAULT_TASK_ID = FirebaseAuth.getInstance().getUid();
+
+    private String mTaskId = DEFAULT_TASK_ID;
     // Constant for logging
-    private static final String TAG = UserEditAudioDetailsActivity.class.getSimpleName();
+    private static final String TAG = NowPlaying.class.getSimpleName();
     // Fields for views
     TextView mEditT, mEditAfN, mState, mCounty, mFullname, mFamilyName;
 
@@ -49,7 +52,6 @@ public class NowPlaying extends AppCompatActivity {
     String textvurl;
     private Story storiesa;
 
-    private int mTaskId = DEFAULT_TASK_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class NowPlaying extends AppCompatActivity {
         AppDatabase mDb = AppDatabase.getInstance(getApplicationContext());
 
         if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
-            mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
+            mTaskId = savedInstanceState.getString(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
         }
 
         Intent intent = getIntent();
@@ -73,14 +75,14 @@ public class NowPlaying extends AppCompatActivity {
             //  mButton.setText(R.string.update_button);
             if (mTaskId == DEFAULT_TASK_ID) {
                 // populate the UI
-                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+                mTaskId = intent.getStringExtra(DEFAULT_TASK_ID);
                 // Remove the logging and the call to loadTaskById, this is done in the ViewModel now
                 // Declare a AddTaskViewModelFactory using mDb and mTaskId
-                UserEditViewModelFactory factory = new UserEditViewModelFactory(mDb, mTaskId);
+                StoryViewModelFactory factory = new StoryViewModelFactory(mDb, mTaskId);
 // Declare a AddTaskViewModel variable and initialize it by calling ViewModelProviders.of
 // for that use the factory created above AddTaskViewModel
-                final UserEditViewModel viewModel
-                        = ViewModelProviders.of(this, factory).get(UserEditViewModel.class);
+                final StoryViewModel viewModel
+                        = ViewModelProviders.of(this, factory).get(StoryViewModel.class);
 
                 // Observe the LiveData object in the ViewModel. Use it also when removing the observer
                 viewModel.getTask().observe(this, new Observer<Story>() {
@@ -101,7 +103,7 @@ public class NowPlaying extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(INSTANCE_TASK_ID, mTaskId);
+        outState.putString(INSTANCE_TASK_ID, mTaskId);
         super.onSaveInstanceState(outState);
     }
 

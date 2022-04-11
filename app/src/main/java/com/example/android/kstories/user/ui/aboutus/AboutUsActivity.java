@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.android.kstories.BrowseAllFragment;
 import com.example.android.kstories.R;
 
 public class AboutUsActivity extends AppCompatActivity {

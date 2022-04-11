@@ -9,31 +9,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NowPlayingFavoritesActivity"></activity>
-        <activity android:name=".user.ui.aboutus.AboutUsActivity" />
         <activity
-            android:name=".user.UserWelcomeActivity"
-            android:label="@string/title_activity_user_welcome"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".user.UserProfileActivity" />
-        <activity android:name=".NowPlaying" />
-        <activity android:name=".BrowseAllActivity" />
-        <activity android:name=".user.FavoritesActivity" />
-        <activity android:name=".user.UserPlayAudioActivity" />
-        <activity android:name=".user.UserEditAudioDetailsActivity" />
-        <activity android:name=".user.UserSavedAudioActivity" />
-        <activity android:name=".user.UserAudioDetailActivity" />
-        <activity android:name=".user.UserRecordAudioActivity" />
-        <activity android:name=".MainActivity">
+            android:name=".search.SearchActivity"
+            android:parentActivityName=".MainActivity"/>
+            <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            />-->
+        <activity android:name=".ui.UserEditDetailsActivity" />
+        <activity android:name=".ui.UserDisplayDetailsActivity" />
+        <activity android:name=".loggingin.LoginActivity" />
+        <activity android:name=".loggingin.RegisterActivity" />
+        <activity android:name=".loggingin.PreMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".NowPlayingFavoritesActivity" />
+        <activity android:name=".user.ui.aboutus.AboutUsActivity" />
+        <activity
+            android:name=".user.UserWelcomeActivity"
+            android:label="@string/title_activity_user_welcome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".NowPlaying" />
+       <!-- <activity android:name=".BrowseAllActivity" />-->
+        <activity android:name=".user.FavoritesActivity" />
+        <activity android:name=".user.PlayAudioActivity" />
+        <activity android:name=".ui.recordings.EditAudioDetailsActivity" />
+        <activity android:name=".user.SavedAudioActivity" />
+        <activity android:name=".user.UserAudioDetailActivity" />
+        <activity android:name=".user.RecordAudioActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <receiver android:name=".widget.FavoritesWidgetProvider">
             <intent-filter>

@@ -9,15 +9,19 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity
+@Entity(tableName  = "story", indices = {@Index(value = {"userId"},
+        unique = true)})
 public class Story  {
 
-    @PrimaryKey(autoGenerate = true)
-    private int userId;
+    @PrimaryKey(autoGenerate =true)
+    public int primaryId;
+    @NonNull
+    public String userId;
     @NonNull
     private String audiotitle;
     private String storycity;
@@ -29,7 +33,6 @@ public class Story  {
     private String familyname;
     @ColumnInfo(name = "updated_at")
     private String audioUrl;
-    private Boolean security;
     private Date updatedAt;
 
 
@@ -43,7 +46,8 @@ public class Story  {
 
     //Regular Constructor
     @Ignore
-    public Story(@NonNull String audiotitle, String storycity, String storycounty,  @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Boolean security, Date updatedAt) {
+    public Story(@NonNull String userId, @NonNull String audiotitle, String storycity, String storycounty,  @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
+       this.userId = userId;
         this.audiotitle = audiotitle;
         this.storycity = storycity;
         this.storycounty = storycounty;
@@ -52,13 +56,13 @@ public class Story  {
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
         this.audioUrl = audioUrl;
-        this.security = security;
         this.updatedAt = updatedAt;
     }
 
     //Id Constructor
 
-    public Story(int userId, @NonNull String audiotitle, String storycity, String storycounty, @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Boolean security, Date updatedAt) {
+    public Story(int primaryId, String userId, @NonNull String audiotitle, String storycity, String storycounty, @NonNull String storystate, String ancestorfirstname, String ancestorlastname, String familyname, String audioUrl, Date updatedAt) {
+        this.primaryId = primaryId;
         this.userId = userId;
         this.audiotitle = audiotitle;
         this.storycity = storycity;
@@ -68,7 +72,7 @@ public class Story  {
         this.ancestorlastname = ancestorlastname;
         this.familyname = familyname;
         this.audioUrl = audioUrl;
-        this.security = security;
+
         this.updatedAt = updatedAt;
     }
 
@@ -79,12 +83,21 @@ public class Story  {
 
     }
 
+    /***primaryId***/
+    public int getPrimaryId() {
+        return primaryId;
+    }
+
+    public void setPrimaryId(int primaryId) {
+        this.primaryId = primaryId;
+    }
+
 /***UserId**/
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -166,15 +179,6 @@ public class Story  {
         this.audioUrl = audioUrl;
     }
 
-    /**Security: Public or Private**/
-
-    public Boolean getSecurity() {
-        return security;
-    }
-
-    public void setSecurity(Boolean security) {
-        this.security = security;
-    }
 
     /***DATE/Time***/
 
