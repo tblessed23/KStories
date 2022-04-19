@@ -11,7 +11,16 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".search.SearchActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
+
+        </activity>
             <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             />-->
         <activity android:name=".ui.UserEditDetailsActivity" />

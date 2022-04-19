@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.UserDisplayDetailsFragment">
+
+
+    <TextView
+        android:id="@+id/fragment_loggedin_loggedInUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
+
+
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <!-- RecyclerView that is responsible for holding recorded stories -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:paddingBottom="28dp" />
+    </LinearLayout>
+
+    <!--    <TextView-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:textAppearance="?android:textAppearanceMedium"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:text="@string/empty_state"-->
+    <!--        android:id="@+id/empty_view"/>-->
+
+
+
+
+
+</LinearLayout>
